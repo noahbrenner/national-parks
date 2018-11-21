@@ -1,0 +1,11 @@
+{
+  "description": "A web app displaying a map and info on National Parks in Oregon.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noahbrenner/national-parks.git"
+  }
+}
