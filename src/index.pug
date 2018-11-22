@@ -1,0 +1,25 @@
+doctype html
+html(lang="en-us")
+  head
+    title Oregon National Parks map
+    meta(charset="utf-8")
+    meta(name="viewport", content="initial-scale=1")
+    meta(http-equiv="X-UA-Compatible" content="ID=edge")
+    link(rel="stylesheet", href="css/styles.scss")
+  body
+    section.sidebar
+      header
+        h1 Oregon National Parks
+        p Created by Noah Brenner — Source on GitHub
+        div.favorites-toggle
+          button#show-all Show everything
+          button#show-favorites Show favorites
+      nav
+        ul
+          li Park Name One
+          li Park Name Two
+      footer
+        p Data from the National Parks Service API.
+        p Displayed using Google Maps and Knockout.js.
+    section#map
+    script(src="js/app.ts")

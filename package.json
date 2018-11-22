@@ -1,11 +1,24 @@
 {
   "description": "A web app displaying a map and info on National Parks in Oregon.",
   "scripts": {
+    "clean": "del-cli dist/*",
+    "predevbuild": "npm run clean",
+    "devbuild": "parcel build src/index.pug --experimental-scope-hoisting --no-minify",
+    "start": "parcel serve src/index.pug --port 3000",
+    "prebuild": "npm run clean",
+    "build": "parcel build src/index.pug --experimental-scope-hoisting",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/noahbrenner/national-parks.git"
+  },
+  "devDependencies": {
+    "del-cli": "^1.1.0",
+    "node-sass": "^4.10.0",
+    "parcel-bundler": "^1.10.3",
+    "pug": "^2.0.3",
+    "typescript": "^3.1.6"
   }
 }
