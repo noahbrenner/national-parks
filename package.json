@@ -2,12 +2,13 @@
   "description": "A web app displaying a map and info on National Parks in Oregon.",
   "scripts": {
     "clean": "del-cli dist/*",
-    "predevbuild": "npm run clean",
-    "devbuild": "parcel build src/index.pug --experimental-scope-hoisting --no-minify",
+    "lint": "tsc src/js/app.ts --noEmit && tslint src/**/*.ts",
+    "test": "npm run lint",
     "start": "parcel serve src/index.pug --port 3000",
-    "prebuild": "npm run clean",
-    "build": "parcel build src/index.pug --experimental-scope-hoisting",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "predevbuild": "npm run clean",
+    "devbuild": "parcel build src/index.pug",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "parcel build src/index.pug --experimental-scope-hoisting"
   },
   "license": "MIT",
   "repository": {
@@ -19,6 +20,7 @@
     "node-sass": "^4.10.0",
     "parcel-bundler": "^1.10.3",
     "pug": "^2.0.3",
+    "tslint": "^5.11.0",
     "typescript": "^3.1.6"
   }
 }

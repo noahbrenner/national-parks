@@ -1,0 +1,15 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+    ],
+    "rules": {
+      "no-console": false,
+      "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+      "space-before-function-paren": [true, "always"],
+      "trailing-comma": [true, {
+        "multiline": "never",
+        "singleline": "never"
+      }]
+    }
+}
