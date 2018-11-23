@@ -1,2 +1,2 @@
-Oregon National Parks - Interactive Map Webapp
-==============================================
+Oregon National Parks Map (web app)
+===================================
