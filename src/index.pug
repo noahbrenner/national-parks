@@ -1,3 +1,12 @@
+-
+  const urls = {
+    noah: 'https://noahbrenner.github.io/',
+    repo: 'https://github.com/noahbrenner/national-parks',
+    nps: 'https://www.nps.gov/subjects/developer/api-documentation.htm',
+    maps: 'https://developers.google.com/maps/documentation/',
+    ko: 'https://knockoutjs.com/'
+  };
+
 doctype html
 html(lang="en-us")
   head
@@ -10,7 +19,7 @@ html(lang="en-us")
     section.sidebar
       header
         h1 Oregon National Parks
-        p Created by Noah Brenner — Source on GitHub
+        h2 Created by #[a(href=urls.noah) Noah Brenner] — #[a(href=urls.repo) Source on GitHub]
         div.favorites-toggle
           button#show-all Show everything
           button#show-favorites Show favorites
@@ -19,7 +28,7 @@ html(lang="en-us")
           li Park Name One
           li Park Name Two
       footer
-        p Data from the National Parks Service API.
-        p Displayed using Google Maps and Knockout.js.
+        p Data from the #[a(href=urls.nps) National Parks Service API]
+        p Displayed using #[a(href=urls.maps) Google Maps] and #[a(href=urls.ko) Knockout.js]
     main#map
     script(src="js/app.ts")
