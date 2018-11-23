@@ -27,11 +27,13 @@ html(lang="en-us")
           label(for="filter-select") Filter:
           select#filter-select
             option(value="") None
-            option(value="option1") Option 1
+
+            // ko foreach: parkTypes
+            option(value="$data", data-bind="text: $data")
+            // /ko
       nav
-        ul
-          li Park Name One
-          li Park Name Two
+        ul(data-bind="foreach: parks")
+          li(data-bind="text: $data")
       footer
         p Data from the #[a(href=urls.nps) National Parks Service API]
         p Displayed using #[a(href=urls.maps) Google Maps] and #[a(href=urls.ko) Knockout.js]
