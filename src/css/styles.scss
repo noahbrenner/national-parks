@@ -1,5 +1,79 @@
+$sidebar-background: #eee;
+
+/* === General styles === */
+
 *,
 :before,
 :after {
   box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  border: none;
+}
+
+/* === Major block content === */
+
+body {
+  display: flex;
+}
+
+.sidebar {
+  padding: 1em;
+  flex-basis: 400px;
+  height: 100%;
+  background: $sidebar-background;
+}
+
+main {
+  flex: 1;
+}
+
+/* === Sidebar === */
+
+%sidebar-headings {
+  margin: 0 0 1em;
+  text-align: center;
+}
+
+.sidebar {
+  & h1 {
+    @extend %sidebar-headings;
+    font-size: 1.5em;
+  }
+
+  & h2 {
+    @extend %sidebar-headings;
+    font-size: 1.1em;
+  }
+}
+
+nav {
+  & ul {
+    margin: 1em 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & li {
+    line-height: 2em;
+    font-size: 1.25em;
+    font-weight: bold;
+
+    &:before {
+      content: "☆";
+      display: inline-block;
+      padding-right: 0.5em;
+      color: #999;
+    }
+
+    &.favorite:before {
+      content: "★";
+      color: #ff0;
+    }
+  }
 }
