@@ -5,6 +5,8 @@ html(lang="en-us")
     meta(charset="utf-8")
     meta(name="viewport", content="initial-scale=1")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    script(async, defer, src="js/app.ts")
+    script(async, defer, src=`https://maps.googleapis.com/maps/api/js?v=3&key=${googleApiKey}`)#maps-script
     link(rel="stylesheet", href="css/styles.scss")
   body
     section.sidebar
@@ -29,4 +31,3 @@ html(lang="en-us")
         p Data from the #[a(href=web.nps) National Parks Service API]
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]
     main#map
-    script(src="js/app.ts")

@@ -1,5 +1,9 @@
 import ko from 'knockout';
+import initMapAsync from './googlemaps';
 import stub from './stub';
+
+const parkMap = initMapAsync();
+parkMap.catch((error) => console.log(error));
 
 class ViewModel {
     public parks: ko.ObservableArray<string>;
