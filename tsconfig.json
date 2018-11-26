@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "noEmit": true,
@@ -10,5 +9,8 @@
     "noUnusedParameters": true,
     "strict": true,
     "target": "ES5"
-  }
+  },
+  "include": [
+    "src/js/*.ts"
+  ]
 }

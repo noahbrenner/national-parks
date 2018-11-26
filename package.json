@@ -2,8 +2,7 @@
   "description": "A web app displaying a map and info on National Parks in Oregon.",
   "scripts": {
     "clean": "del-cli dist/*",
-    "lint": "tsc src/js/app.ts --noEmit && tslint src/**/*.ts",
-    "test": "npm run lint",
+    "lint": "tsc && tslint --project .",
     "start": "parcel serve src/index.pug --port 3000",
     "predevbuild": "npm run clean",
     "devbuild": "parcel build src/index.pug",
