@@ -32,11 +32,11 @@ function initMapOnLoadAsync(): Promise<ParkMap> {
  */
 export default function initMapAsync(): Promise<ParkMap> {
     return new Promise((resolve, reject) => {
-        const googleScript = document.getElementById('maps-script');
+        const mapScript = document.getElementById('maps-script') as HTMLElement;
 
         // Reject if the script doesn't load after 5 seconds
         const timeout = setTimeout(() => {
-            googleScript.removeEventListener('load', resolveInit);
+            mapScript.removeEventListener('load', resolveInit);
             reject('The Google Maps API took too long to load.'
                    + ' Try reloading the page or visiting again later.');
         }, 5_000);
@@ -52,11 +52,11 @@ export default function initMapAsync(): Promise<ParkMap> {
             resolveInit();
         } else {
             // Resolve once Google script has loaded
-            googleScript.addEventListener('load', resolveInit);
+            mapScript.addEventListener('load', resolveInit);
 
             // Reject if the script fails to load
-            googleScript.addEventListener('error', () => {
-                googleScript.removeEventListener('load', resolveInit);
+            mapScript.addEventListener('error', () => {
+                mapScript.removeEventListener('load', resolveInit);
                 reject('Failed to load Google Maps API.'
                        + 'Try reloading the page.');
             });
