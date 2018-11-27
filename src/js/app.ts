@@ -22,7 +22,7 @@ class Park {
         this.imgCaption = parkObj.imgCaption;
         this.imgUrl = parkObj.imgUrl;
         this.isFavorite = ko.observable(parkObj.id === 'a');
-        this.latLng = {lat: 40.7413549, lng: -73.9980244};
+        this.latLng = parkObj.latLng;
         this.name = parkObj.name;
         this.parkType = parkObj.parkType;
         this.website = parkObj.website;

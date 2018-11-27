@@ -2,12 +2,21 @@ import {Promise} from 'es6-promise';
 
 export class ParkMap {
     public map: google.maps.Map;
+    public oregonBounds: google.maps.LatLngBounds;
 
     constructor() {
         this.map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 40.7413549, lng: -73.9980244},
-            zoom: 13
+            center: {lat: 43.8041334, lng: -120.5542012}, // Center of Oregon
+            zoom: 7
         });
+
+        // We're hardcoding these coordinates since they don't change
+        this.oregonBounds = new google.maps.LatLngBounds(
+            {lat: 41.9917941, lng: -124.7035411}, // Southwest
+            {lat: 46.299099, lng: -116.463262} // Northeast
+        );
+
+        this.map.fitBounds(this.oregonBounds);
     }
 }
 
