@@ -1,6 +1,6 @@
 import {Promise} from 'es6-promise';
 
-class ParkMap {
+export class ParkMap {
     public map: google.maps.Map;
 
     constructor() {

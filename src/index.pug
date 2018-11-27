@@ -26,7 +26,7 @@ html(lang="en-us")
             // /ko
       nav
         ul(data-bind="foreach: parks")
-          li(data-bind="text: $data")
+          li(data-bind="text: name")
       footer
         p Data from the #[a(href=web.nps) National Parks Service API]
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]
