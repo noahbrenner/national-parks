@@ -3,7 +3,7 @@ import initMapAsync, {ParkMap} from './googlemaps';
 import getParksAsync, {ParkData} from './nationalparks';
 
 /** Represent an individual National Park */
-class Park {
+export class Park {
     public address: string;
     public description: string;
     public imgCaption?: string; // And/or credit, title
@@ -42,7 +42,7 @@ class ViewModel {
         this.parkTypes = ko.observableArray();
 
         // Fetch park data from the National Parks Service
-        getParksAsync().then((parks) => {
+        const parksPromise = getParksAsync().then((parks) => {
             // Create `Park` instances and save them in our model
             this.parks.push(...parks.map((park) => new Park(park)));
 
@@ -62,6 +62,11 @@ class ViewModel {
         // Initialize the map and save our `ParkMap` instance in our model
         initMapAsync().then((parkMap) => {
             this.parkMap = parkMap;
+
+            // Display map markers once the park array is also initialized
+            parksPromise.then(() => {
+                parkMap.initMarkers(this.parks());
+            });
         }).catch((error) => {
             console.log(error);
         });

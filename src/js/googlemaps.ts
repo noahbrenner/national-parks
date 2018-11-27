@@ -1,7 +1,9 @@
 import {Promise} from 'es6-promise';
+import {Park} from './app';
 
 export class ParkMap {
     public map: google.maps.Map;
+    public markers: google.maps.MVCArray<google.maps.Marker>;
     public oregonBounds: google.maps.LatLngBounds;
 
     constructor() {
@@ -10,6 +12,8 @@ export class ParkMap {
             zoom: 7
         });
 
+        this.markers = new google.maps.MVCArray();
+
         // We're hardcoding these coordinates since they don't change
         this.oregonBounds = new google.maps.LatLngBounds(
             {lat: 41.9917941, lng: -124.7035411}, // Southwest
@@ -17,6 +21,20 @@ export class ParkMap {
         );
 
         this.map.fitBounds(this.oregonBounds);
+    }
+
+    /** Add new markers to our markers array and display them on the map */
+    public initMarkers(parks: Park[]) {
+        for (const park of parks) {
+            const marker = new google.maps.Marker({
+                animation: google.maps.Animation.DROP,
+                map: this.map,
+                position: park.latLng,
+                title: park.name
+            });
+
+            this.markers.push(marker);
+        }
     }
 }
 
