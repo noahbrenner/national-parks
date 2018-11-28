@@ -81,3 +81,11 @@ nav {
     }
   }
 }
+
+.modal {
+  display: none; // Hidden by default
+
+  main & {
+    display: block; // Visible once moved inside the main element (the map)
+  }
+}

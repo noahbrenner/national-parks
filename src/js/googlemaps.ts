@@ -2,17 +2,20 @@ import {Promise} from 'es6-promise';
 import {Park} from './app';
 
 export class ParkMap {
+    public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
-    public markers: google.maps.MVCArray<google.maps.Marker>;
+    public markers: google.maps.Marker[];
     public oregonBounds: google.maps.LatLngBounds;
 
     constructor() {
+        this.markers = [];
+
+        /* === Initialize and configure the map === */
+
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 43.8041334, lng: -120.5542012}, // Center of Oregon
             zoom: 7
         });
-
-        this.markers = new google.maps.MVCArray();
 
         // We're hardcoding these coordinates since they don't change
         this.oregonBounds = new google.maps.LatLngBounds(
@@ -21,11 +24,23 @@ export class ParkMap {
         );
 
         this.map.fitBounds(this.oregonBounds);
+
+        /* === Initialize and configure the infowindow === */
+
+        this.infowindow = new google.maps.InfoWindow({
+            content: document.getElementById('infowindow') as HTMLElement
+        });
+
+        this.infowindow.addListener('closeclick', () => {
+            this.infowindow.set('marker', undefined);
+            // TODO Inform the ViewModel
+        });
     }
 
     /** Add new markers to our markers array and display them on the map */
     public initMarkers(parks: Park[]) {
-        for (const park of parks) {
+        this.markers.push(...parks.map((park) => {
+            // Create a new marker
             const marker = new google.maps.Marker({
                 animation: google.maps.Animation.DROP,
                 map: this.map,
@@ -33,8 +48,17 @@ export class ParkMap {
                 title: park.name
             });
 
-            this.markers.push(marker);
-        }
+            // Open the info window when the marker is clicked
+            marker.addListener('click', () => {
+                if (this.infowindow.get('marker') !== marker) {
+                    this.infowindow.set('marker', marker);
+                    this.infowindow.open(this.map, marker);
+                    // TODO Inform the ViewModel
+                }
+            });
+
+            return marker;
+        }));
     }
 }
 

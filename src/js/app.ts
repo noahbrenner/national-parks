@@ -6,6 +6,7 @@ import getParksAsync, {ParkData} from './nationalparks';
 export class Park {
     public address: string;
     public description: string;
+    public id: string;
     public imgCaption?: string; // And/or credit, title
     public imgUrl?: string;
     public isFavorite: KnockoutObservable<boolean>;
@@ -14,11 +15,10 @@ export class Park {
     public parkType: string;
     public website: string;
 
-    // private id: string;
-
     constructor(parkObj: ParkData) {
         this.address = parkObj.address;
         this.description = parkObj.description;
+        this.id = parkObj.id;
         this.imgCaption = parkObj.imgCaption;
         this.imgUrl = parkObj.imgUrl;
         this.isFavorite = ko.observable(parkObj.id === 'a');
@@ -26,19 +26,19 @@ export class Park {
         this.name = parkObj.name;
         this.parkType = parkObj.parkType;
         this.website = parkObj.website;
-
-        // this.id = parkObj.id;
     }
 }
 
 /** Constructor for our Knockout ViewModel */
 class ViewModel {
-    public parks: KnockoutObservableArray<Park>;
+    public currentPark: KnockoutObservable<Park | undefined>;
     public parkMap?: ParkMap;
     public parkTypes: KnockoutObservableArray<string>;
+    public parks: KnockoutObservableArray<Park>;
 
     constructor() {
         this.parks = ko.observableArray();
+        this.currentPark = ko.observable();
         this.parkTypes = ko.observableArray();
 
         // Fetch park data from the National Parks Service
@@ -70,6 +70,14 @@ class ViewModel {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    /**
+     * Set the current park
+     * We're using an arrow function so `this` always refers to the ViewModel
+     */
+    public selectPark = (park: Park) => {
+        this.currentPark(park);
     }
 }
 
