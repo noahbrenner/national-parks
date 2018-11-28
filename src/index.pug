@@ -22,7 +22,7 @@ html(lang="en-us")
             option(value="") None
 
             // ko foreach: parkTypes
-            option(value="$data", data-bind="text: $data")
+            option(data-bind="text: $data, attr: {value: $data}")
             // /ko
       nav
         ul(data-bind="foreach: parks")
