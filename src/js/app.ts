@@ -73,11 +73,16 @@ class ViewModel {
     }
 
     /**
-     * Set the current park
+     * Set the current park to `park` if it isn't already set that way. If it
+     * *is* already the current park, unset the current park.
      * We're using an arrow function so `this` always refers to the ViewModel
      */
-    public selectPark = (park: Park) => {
-        this.currentPark(park);
+    public maybeSelectPark = (park: Park) => {
+        if (this.currentPark() === park) {
+            this.currentPark(undefined);
+        } else {
+            this.currentPark(park);
+        }
     }
 }
 

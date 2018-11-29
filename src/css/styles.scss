@@ -1,4 +1,7 @@
 $sidebar-background: #eee;
+$park-hover-background: #ddd;
+$park-active-background: #ffc;
+$park-active-border: #000;
 
 /* === General styles === */
 
@@ -64,9 +67,19 @@ nav {
   }
 
   & li {
-    line-height: 2em;
-    font-size: 1.25em;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+    &:hover {
+      background: $park-hover-background
+    }
+
+    &.active {
+      border-color: $park-active-border;
+      background: $park-active-background;
+    }
 
     &:before {
       content: "☆";
@@ -79,6 +92,13 @@ nav {
       content: "★";
       color: #ff0;
     }
+  }
+
+  & a {
+    flex: 1;
+    line-height: 2em;
+    font-size: 1.25em;
+    font-weight: bold;
   }
 }
 
