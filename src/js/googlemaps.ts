@@ -2,6 +2,56 @@ import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Promise} from 'es6-promise';
 import {Park} from './app';
 
+class Marker extends google.maps.Marker {
+    private static colorDefault = 'red';
+    private static colorHovered = 'yellow';
+
+    /** Create a map marker icon with the specified fill color */
+    private static createMarkerIcon(): google.maps.Symbol {
+        /*
+         * We're using the "place" icon from Material Design Icons via the
+         * `@mdi/js` npm package (which gives us access to the SVG path and
+         * allows us to tree shake the unused icons).
+         *
+         * We're resizing the icon from 24x24 to 36x36, another of the
+         * recommended sizes for these icons as documented here:
+         * https://google.github.io/material-design-icons/#sizing
+         *
+         * Material Design icons are distributed with the Apache License 2.0.
+         * The `@mdi/js` npm package is distributed with the MIT License.
+         */
+        return {
+            anchor: new google.maps.Point(12, 24), // Anchor at bottom center
+            fillColor: Marker.colorDefault,
+            fillOpacity: 1,
+            path: mdiMapMarker, // Natural size: 24x24
+            scale: 1.5, // Scale to 36x36
+            strokeWeight: 1 // Don't scale the stroke weight
+        };
+    }
+
+    constructor(park: Park, map: google.maps.Map) {
+        super({
+            animation: google.maps.Animation.DROP,
+            // Create a separate `Symbol` for each marker
+            icon: Marker.createMarkerIcon(),
+            map,
+            position: park.latLng,
+            title: park.name
+        });
+
+        this.set('id', park.id);
+    }
+
+    /** Set the color of a marker icon to represent a hover state */
+    public setHovered(hover: boolean) {
+        const icon = this.getIcon() as google.maps.Symbol;
+        // Update the marker's existing `Symbol`
+        icon.fillColor = hover ? Marker.colorHovered : Marker.colorDefault;
+        this.setIcon(icon);
+    }
+}
+
 interface MapConstructorConfig {
     markerHoverCallback: (parkId?: string) => void;
 }
@@ -9,18 +59,14 @@ interface MapConstructorConfig {
 export class ParkMap {
     public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
-    public markerIconDefault: google.maps.Symbol;
-    public markerIconHover: google.maps.Symbol;
-    public markerOnClick: () => void;
-    public markerOnMouseout: () => void;
-    public markerOnMouseover: () => void;
-    public markers: google.maps.Marker[];
+    public markers: Marker[];
+    public onMarkerClick: () => void;
+    public onMarkerMouseout: () => void;
+    public onMarkerMouseover: () => void;
     public oregonBounds: google.maps.LatLngBounds;
 
     constructor(config: MapConstructorConfig) {
         this.markers = [];
-        this.markerIconDefault = this.createMarkerIcon('red');
-        this.markerIconHover = this.createMarkerIcon('yellow');
 
         /* === Initialize and configure the map === */
 
@@ -44,6 +90,8 @@ export class ParkMap {
         });
 
         this.infowindow.addListener('closeclick', () => {
+            // Explicitly close so that we can trigger the listener artificially
+            this.infowindow.close();
             this.infowindow.set('marker', undefined);
             // TODO Inform the ViewModel
         });
@@ -51,27 +99,24 @@ export class ParkMap {
         /* === Define event listener handlers for markers === */
 
         /** Change a marker's icon (for 'mouseover' event) */
-        this.markerOnMouseover = ((hoverIcon) => {
-            return function (this: google.maps.Marker) {
-                this.setIcon(hoverIcon);
-                config.markerHoverCallback(this.get('id'));
-            };
-        })(this.markerIconHover);
+        this.onMarkerMouseover = function (this: Marker) {
+            this.setHovered(true);
+            config.markerHoverCallback(this.get('id'));
+        };
 
         /** Reset a marker's icon (for 'mouseout' event) */
-        this.markerOnMouseout = ((defaultIcon) => {
-            return function (this: google.maps.Marker) {
-                this.setIcon(defaultIcon);
-                config.markerHoverCallback(undefined);
-            };
-        })(this.markerIconDefault);
+        this.onMarkerMouseout = function (this: Marker) {
+            this.setHovered(false);
+            config.markerHoverCallback(undefined);
+        };
 
         /** Open/close the infowindow at a marker (for 'click' event) */
-        this.markerOnClick = ((infowindow, map) => {
-            return function (this: google.maps.Marker) {
+        // Use an IIFE to keep infowindow/map variables while still allowing
+        // `this` to refer to the clicked marker
+        this.onMarkerClick = ((infowindow, map) => {
+            return function (this: Marker) {
                 if (infowindow.get('marker') === this) {
                     // Close infowindow if the already active marker was clicked
-                    infowindow.close();
                     google.maps.event.trigger(infowindow, 'closeclick');
                 } else {
                     infowindow.set('marker', this);
@@ -82,57 +127,31 @@ export class ParkMap {
         })(this.infowindow, this.map);
     }
 
-    /** Create a map marker icon with the specified fill color */
-    public createMarkerIcon(color: string): google.maps.Symbol {
-        /*
-         * We're using the "place" icon from Material Design Icons via the
-         * `@mdi/js` npm package (which gives us access to the SVG path and
-         * allows us to tree shake the unused icons).
-         *
-         * We're resizing the icon from 24x24 to 36x36, another of the
-         * recommended sizes for these icons as documented here:
-         * https://google.github.io/material-design-icons/#sizing
-         *
-         * Material Design icons are distributed with the Appache License 2.0.
-         * The `@mdi/js` npm package is distributed with the MIT License.
-         */
-        return {
-            anchor: new google.maps.Point(12, 24), // Anchor at bottom center
-            fillColor: color,
-            fillOpacity: 1,
-            path: mdiMapMarker, // Natural size: 24x24
-            scale: 1.5, // Scale to 36x36
-            strokeWeight: 1 // Don't scale the stroke weight
-        };
-    }
-
     /** Add new markers to our markers array and display them on the map */
     public initMarkers(parks: Park[]) {
         this.markers.push(...parks.map((park) => {
             // Create a new marker
-            const marker = new google.maps.Marker({
-                animation: google.maps.Animation.DROP,
-                icon: this.markerIconDefault,
-                map: this.map,
-                position: park.latLng,
-                title: park.name
-            });
+            const marker = new Marker(park, this.map);
 
             marker.set('id', park.id);
 
-            marker.addListener('click', this.markerOnClick);
-            marker.addListener('mouseover', this.markerOnMouseover);
-            marker.addListener('mouseout', this.markerOnMouseout);
+            marker.addListener('click', this.onMarkerClick);
+            marker.addListener('mouseover', this.onMarkerMouseover);
+            marker.addListener('mouseout', this.onMarkerMouseout);
 
             return marker;
         }));
     }
 
     /** Update the display of a marker as if its hover state were changed */
-    public setHoverStateById(id: string, isHovered: boolean) {
+    public setHoverStateById(id: string, hover: boolean) {
         const target = this.markers.find((marker) => marker.get('id') === id);
-        const func = isHovered ? this.markerOnMouseover : this.markerOnMouseout;
-        func.call(target);
+
+        if (target) {
+            target.setHovered(hover);
+        } else {
+            throw new Error(`Could not find marker with ID "${id}"`);
+        }
     }
 }
 
