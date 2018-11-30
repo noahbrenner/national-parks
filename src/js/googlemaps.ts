@@ -60,10 +60,14 @@ export class ParkMap {
             };
         })(this.markerIconDefault);
 
-        /** Display the infowindow at a marker (for 'click' event) */
+        /** Open/close the infowindow at a marker (for 'click' event) */
         this.markerOnClick = ((infowindow, map) => {
             return function (this: google.maps.Marker) {
-                if (infowindow.get('marker') !== this) {
+                if (infowindow.get('marker') === this) {
+                    // Close infowindow if the already active marker was clicked
+                    infowindow.close();
+                    google.maps.event.trigger(infowindow, 'closeclick');
+                } else {
                     infowindow.set('marker', this);
                     infowindow.open(map, this);
                     // TODO Inform the ViewModel
