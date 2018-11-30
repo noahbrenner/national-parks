@@ -183,7 +183,7 @@ export default function getMapConstructorAsync(): Promise<typeof ParkMap> {
             mapScript.addEventListener('error', () => {
                 mapScript.removeEventListener('load', resolveInit);
                 reject('Failed to load Google Maps API.'
-                       + 'Try reloading the page.');
+                       + ' Try reloading the page.');
             });
         }
     });
