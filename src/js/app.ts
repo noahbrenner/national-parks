@@ -35,6 +35,7 @@ export class Park {
 /** Constructor for our Knockout ViewModel */
 class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
+    public hoveredPark: KnockoutObservable<Park | undefined>;
     public parkMap?: ParkMapType;
     public parkTypes: KnockoutObservableArray<string>;
     public parks: KnockoutObservableArray<Park>;
@@ -42,6 +43,7 @@ class ViewModel {
     constructor() {
         this.parks = ko.observableArray();
         this.currentPark = ko.observable();
+        this.hoveredPark = ko.observable();
         this.parkTypes = ko.observableArray();
 
         // Fetch park data from the National Parks Service
@@ -64,7 +66,16 @@ class ViewModel {
 
         // Initialize the map and save our `ParkMap` instance in our model
         getMapConstructorAsync().then((ParkMap) => {
-            this.parkMap = new ParkMap();
+            this.parkMap = new ParkMap({
+                /** Set the "hovered" park by its park ID */
+                markerHoverCallback: (parkId?: string) => {
+                    const hoveredPark = parkId
+                        ? this.parks().find((park) => park.id === parkId)
+                        : undefined;
+
+                    this.hoveredPark(hoveredPark);
+                }
+            });
 
             // Display map markers once the park array is also initialized
             parksPromise.then(() => {

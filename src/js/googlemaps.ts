@@ -2,6 +2,10 @@ import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Promise} from 'es6-promise';
 import {Park} from './app';
 
+interface MapConstructorConfig {
+    markerHoverCallback: (parkId?: string) => void;
+}
+
 export class ParkMap {
     public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
@@ -13,7 +17,7 @@ export class ParkMap {
     public markers: google.maps.Marker[];
     public oregonBounds: google.maps.LatLngBounds;
 
-    constructor() {
+    constructor(config: MapConstructorConfig) {
         this.markers = [];
         this.markerIconDefault = this.createMarkerIcon('red');
         this.markerIconHover = this.createMarkerIcon('yellow');
@@ -47,16 +51,18 @@ export class ParkMap {
         /* === Define event listener handlers for markers === */
 
         /** Change a marker's icon (for 'mouseover' event) */
-        this.markerOnMouseover = ((icon) => {
+        this.markerOnMouseover = ((hoverIcon) => {
             return function (this: google.maps.Marker) {
-                this.setIcon(icon);
+                this.setIcon(hoverIcon);
+                config.markerHoverCallback(this.get('id'));
             };
         })(this.markerIconHover);
 
         /** Reset a marker's icon (for 'mouseout' event) */
-        this.markerOnMouseout = ((icon) => {
+        this.markerOnMouseout = ((defaultIcon) => {
             return function (this: google.maps.Marker) {
-                this.setIcon(icon);
+                this.setIcon(defaultIcon);
+                config.markerHoverCallback(undefined);
             };
         })(this.markerIconDefault);
 
