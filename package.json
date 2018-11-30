@@ -16,6 +16,7 @@
     "url": "git+https://github.com/noahbrenner/national-parks.git"
   },
   "dependencies": {
+    "@mdi/js": "^3.0.39",
     "es6-promise": "^4.2.5",
     "knockout": "^3.4.2"
   },

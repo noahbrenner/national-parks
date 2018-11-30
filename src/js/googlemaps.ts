@@ -1,14 +1,19 @@
+import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Promise} from 'es6-promise';
 import {Park} from './app';
 
 export class ParkMap {
     public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
+    public markerIconDefault: google.maps.Symbol;
+    public markerIconHover: google.maps.Symbol;
     public markers: google.maps.Marker[];
     public oregonBounds: google.maps.LatLngBounds;
 
     constructor() {
         this.markers = [];
+        this.markerIconDefault = this.createMarkerIcon('red');
+        this.markerIconHover = this.createMarkerIcon('yellow');
 
         /* === Initialize and configure the map === */
 
@@ -37,12 +42,37 @@ export class ParkMap {
         });
     }
 
+    /** Create a map marker icon with the specified fill color */
+    public createMarkerIcon(color: string): google.maps.Symbol {
+        /*
+         * We're using the "place" icon from Material Design Icons via the
+         * `@mdi/js` npm package (which gives us access to the SVG path and
+         * allows us to tree shake the unused icons).
+         *
+         * We're resizing the icon from 24x24 to 36x36, another of the
+         * recommended sizes for these icons as documented here:
+         * https://google.github.io/material-design-icons/#sizing
+         *
+         * Material Design icons are distributed with the Appache License 2.0.
+         * The `@mdi/js` npm package is distributed with the MIT License.
+         */
+        return {
+            anchor: new google.maps.Point(12, 24), // Anchor at bottom center
+            fillColor: color,
+            fillOpacity: 1,
+            path: mdiMapMarker, // Natural size: 24x24
+            scale: 1.5, // Scale to 36x36
+            strokeWeight: 1 // Don't scale the stroke weight
+        };
+    }
+
     /** Add new markers to our markers array and display them on the map */
     public initMarkers(parks: Park[]) {
         this.markers.push(...parks.map((park) => {
             // Create a new marker
             const marker = new google.maps.Marker({
                 animation: google.maps.Animation.DROP,
+                icon: this.markerIconDefault,
                 map: this.map,
                 position: park.latLng,
                 title: park.name
@@ -55,6 +85,14 @@ export class ParkMap {
                     this.infowindow.open(this.map, marker);
                     // TODO Inform the ViewModel
                 }
+            });
+
+            marker.addListener('mouseover', () => {
+                marker.setIcon(this.markerIconHover);
+            });
+
+            marker.addListener('mouseout', () => {
+                marker.setIcon(this.markerIconDefault);
             });
 
             return marker;
