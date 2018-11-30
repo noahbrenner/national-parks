@@ -112,12 +112,21 @@ export class ParkMap {
                 title: park.name
             });
 
+            marker.set('id', park.id);
+
             marker.addListener('click', this.markerOnClick);
             marker.addListener('mouseover', this.markerOnMouseover);
             marker.addListener('mouseout', this.markerOnMouseout);
 
             return marker;
         }));
+    }
+
+    /** Update the display of a marker as if its hover state were changed */
+    public setHoverStateById(id: string, isHovered: boolean) {
+        const target = this.markers.find((marker) => marker.get('id') === id);
+        const func = isHovered ? this.markerOnMouseover : this.markerOnMouseout;
+        func.call(target);
     }
 }
 

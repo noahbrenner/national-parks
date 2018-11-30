@@ -27,7 +27,7 @@ html(lang="en-us")
       nav
         ul(data-bind="foreach: parks")
           li(data-bind="css: {active: $root.currentPark() === $data}")
-            a(data-bind="text: name, click: $root.maybeSelectPark")
+            a(href="#", data-bind="text: name, event: {click: $root.selectPark, mouseover: $root.toggleHover, mouseout: $root.toggleHover}")
       footer
         p Data from the #[a(href=web.nps) National Parks Service API]
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]

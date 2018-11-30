@@ -72,16 +72,28 @@ class ViewModel {
         });
     }
 
+    /* === Event handlers === */
+    // These handlers are arrow functions so that `this` is always the ViewModel
+
     /**
      * Set the current park to `park` if it isn't already set that way. If it
      * *is* already the current park, unset the current park.
-     * We're using an arrow function so `this` always refers to the ViewModel
      */
-    public maybeSelectPark = (park: Park) => {
+    public selectPark = (park: Park) => {
         if (this.currentPark() === park) {
             this.currentPark(undefined);
         } else {
             this.currentPark(park);
+        }
+    }
+
+    /**
+     * Enable the map to mirror the hover state of the handled DOM element.
+     * This function expects to handle 'mouseover' and 'mouseout' events.
+     */
+    public toggleHover = (park: Park, event: MouseEvent) => {
+        if (this.parkMap) {
+            this.parkMap.setHoverStateById(park.id, event.type === 'mouseover');
         }
     }
 }
