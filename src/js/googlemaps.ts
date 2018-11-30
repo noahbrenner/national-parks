@@ -7,6 +7,9 @@ export class ParkMap {
     public map: google.maps.Map;
     public markerIconDefault: google.maps.Symbol;
     public markerIconHover: google.maps.Symbol;
+    public markerOnClick: () => void;
+    public markerOnMouseout: () => void;
+    public markerOnMouseover: () => void;
     public markers: google.maps.Marker[];
     public oregonBounds: google.maps.LatLngBounds;
 
@@ -40,6 +43,33 @@ export class ParkMap {
             this.infowindow.set('marker', undefined);
             // TODO Inform the ViewModel
         });
+
+        /* === Define event listener handlers for markers === */
+
+        /** Change a marker's icon (for 'mouseover' event) */
+        this.markerOnMouseover = ((icon) => {
+            return function (this: google.maps.Marker) {
+                this.setIcon(icon);
+            };
+        })(this.markerIconHover);
+
+        /** Reset a marker's icon (for 'mouseout' event) */
+        this.markerOnMouseout = ((icon) => {
+            return function (this: google.maps.Marker) {
+                this.setIcon(icon);
+            };
+        })(this.markerIconDefault);
+
+        /** Display the infowindow at a marker (for 'click' event) */
+        this.markerOnClick = ((infowindow, map) => {
+            return function (this: google.maps.Marker) {
+                if (infowindow.get('marker') !== this) {
+                    infowindow.set('marker', this);
+                    infowindow.open(map, this);
+                    // TODO Inform the ViewModel
+                }
+            };
+        })(this.infowindow, this.map);
     }
 
     /** Create a map marker icon with the specified fill color */
@@ -78,22 +108,9 @@ export class ParkMap {
                 title: park.name
             });
 
-            // Open the info window when the marker is clicked
-            marker.addListener('click', () => {
-                if (this.infowindow.get('marker') !== marker) {
-                    this.infowindow.set('marker', marker);
-                    this.infowindow.open(this.map, marker);
-                    // TODO Inform the ViewModel
-                }
-            });
-
-            marker.addListener('mouseover', () => {
-                marker.setIcon(this.markerIconHover);
-            });
-
-            marker.addListener('mouseout', () => {
-                marker.setIcon(this.markerIconDefault);
-            });
+            marker.addListener('click', this.markerOnClick);
+            marker.addListener('mouseover', this.markerOnMouseover);
+            marker.addListener('mouseout', this.markerOnMouseout);
 
             return marker;
         }));
