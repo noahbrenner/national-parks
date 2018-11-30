@@ -26,7 +26,7 @@ html(lang="en-us")
             // /ko
       nav
         ul(data-bind="foreach: parks")
-          li(data-bind="css: {hover: $root.hoveredPark() === $data, active: $root.currentPark() === $data}")
+          li(data-bind="css: {hover: isHovered, active: isCurrentPark}")
             a(href="#", data-bind="text: name, event: {click: $root.selectPark, mouseover: $root.toggleHover, mouseout: $root.toggleHover}")
       footer
         p Data from the #[a(href=web.nps) National Parks Service API]

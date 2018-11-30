@@ -18,7 +18,15 @@ export class Park {
     public parkType: string;
     public website: string;
 
-    constructor(parkObj: ParkData) {
+    public isCurrentPark = ko.pureComputed(() => {
+        return this.parent.currentPark() === this;
+    });
+
+    public isHovered = ko.pureComputed(() => {
+        return this.parent.hoveredPark() === this;
+    });
+
+    constructor(parkObj: ParkData, public parent: ViewModel) {
         this.address = parkObj.address;
         this.description = parkObj.description;
         this.id = parkObj.id;
@@ -49,7 +57,7 @@ class ViewModel {
         // Fetch park data from the National Parks Service
         const parksPromise = getParksAsync().then((parks) => {
             // Create `Park` instances and save them in our model
-            this.parks.push(...parks.map((park) => new Park(park)));
+            this.parks.push(...parks.map((park) => new Park(park, this)));
 
             // Calculate a sorted list of unique park types
             const parkTypes = this.parks()
