@@ -1,5 +1,5 @@
 import * as ko from 'knockout';
-import initMapAsync, {ParkMap} from './googlemaps';
+import getMapConstructorAsync, {ParkMap} from './googlemaps';
 import getParksAsync, {ParkData} from './nationalparks';
 
 /** Represent an individual National Park */
@@ -60,12 +60,12 @@ class ViewModel {
         });
 
         // Initialize the map and save our `ParkMap` instance in our model
-        initMapAsync().then((parkMap) => {
-            this.parkMap = parkMap;
+        getMapConstructorAsync().then((ParkMap) => {
+            this.parkMap = new ParkMap();
 
             // Display map markers once the park array is also initialized
             parksPromise.then(() => {
-                parkMap.initMarkers(this.parks());
+                this.parkMap!.initMarkers(this.parks());
             });
         }).catch((error) => {
             console.log(error);

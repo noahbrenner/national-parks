@@ -131,14 +131,14 @@ export class ParkMap {
 }
 
 /** Initialize our map only after the DOM has loaded */
-function initMapOnLoadAsync(): Promise<ParkMap> {
+function getMapConstructorOnLoadAsync(): Promise<typeof ParkMap> {
     return new Promise((resolve) => {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                resolve(new ParkMap());
+                resolve(ParkMap);
             });
         } else {
-            resolve(new ParkMap());
+            resolve(ParkMap);
         }
     });
 }
@@ -149,7 +149,7 @@ function initMapOnLoadAsync(): Promise<ParkMap> {
  * necessary because we're loading scripts asynchronously and we can't predict
  * whether ours or Google's will load first.
  */
-export default function initMapAsync(): Promise<ParkMap> {
+export default function getMapConstructorAsync(): Promise<typeof ParkMap> {
     return new Promise((resolve, reject) => {
         const mapScript = document.getElementById('maps-script') as HTMLElement;
 
@@ -163,7 +163,7 @@ export default function initMapAsync(): Promise<ParkMap> {
         /** Handle the steps necessary for resolving our returned Promise */
         const resolveInit = () => {
             clearTimeout(timeout);
-            resolve(initMapOnLoadAsync());
+            resolve(getMapConstructorOnLoadAsync());
         };
 
         if ('google' in window) {
