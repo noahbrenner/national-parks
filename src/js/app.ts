@@ -1,5 +1,8 @@
 import * as ko from 'knockout';
-import getMapConstructorAsync, {ParkMap} from './googlemaps';
+// Use an alias for `ParkMap` since we're only importing it for the type
+// information. The real constructor is provided later from a resolved Promise.
+// This avoids shadowing the variable name at that point.
+import getMapConstructorAsync, {ParkMap as ParkMapType} from './googlemaps';
 import getParksAsync, {ParkData} from './nationalparks';
 
 /** Represent an individual National Park */
@@ -32,7 +35,7 @@ export class Park {
 /** Constructor for our Knockout ViewModel */
 class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
-    public parkMap?: ParkMap;
+    public parkMap?: ParkMapType;
     public parkTypes: KnockoutObservableArray<string>;
     public parks: KnockoutObservableArray<Park>;
 
