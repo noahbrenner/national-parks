@@ -3,11 +3,11 @@ import {Promise} from 'es6-promise';
 import {Park} from './app';
 
 class Marker extends google.maps.Marker {
-    private static colorDefault = 'red';
-    private static colorHovered = 'yellow';
+    private static iconDefault: google.maps.Symbol;
+    private static iconHovered: google.maps.Symbol;
 
     /** Create a map marker icon with the specified fill color */
-    private static createMarkerIcon(): google.maps.Symbol {
+    private static createMarkerIcon(color: string): google.maps.Symbol {
         /*
          * We're using the "place" icon from Material Design Icons via the
          * `@mdi/js` npm package (which gives us access to the SVG path and
@@ -22,7 +22,7 @@ class Marker extends google.maps.Marker {
          */
         return {
             anchor: new google.maps.Point(12, 24), // Anchor at bottom center
-            fillColor: Marker.colorDefault,
+            fillColor: color,
             fillOpacity: 1,
             path: mdiMapMarker, // Natural size: 24x24
             scale: 1.5, // Scale to 36x36
@@ -30,11 +30,23 @@ class Marker extends google.maps.Marker {
         };
     }
 
+    /** Create marker icons if they don't exist yet. */
+    private static ensureMarkerIcons() {
+        if (!Marker.iconDefault || !Marker.iconHovered) {
+            Marker.iconDefault = Marker.createMarkerIcon('red');
+            Marker.iconHovered = Marker.createMarkerIcon('yellow');
+        }
+    }
+
     constructor(park: Park, map: google.maps.Map) {
+        // Make sure icons exist. We're doing this in the constructor because
+        // we can't guarantee that Google maps will be loaded when the class is
+        // defined, but it *will* be loaded before instances are created.
+        Marker.ensureMarkerIcons();
+
         super({
             animation: google.maps.Animation.DROP,
-            // Create a separate `Symbol` for each marker
-            icon: Marker.createMarkerIcon(),
+            icon: Marker.iconDefault,
             map,
             position: park.latLng,
             title: park.name
@@ -45,10 +57,7 @@ class Marker extends google.maps.Marker {
 
     /** Set the color of a marker icon to represent a hover state */
     public setHovered(hover: boolean) {
-        const icon = this.getIcon() as google.maps.Symbol;
-        // Update the marker's existing `Symbol`
-        icon.fillColor = hover ? Marker.colorHovered : Marker.colorDefault;
-        this.setIcon(icon);
+        this.setIcon(hover ? Marker.iconHovered : Marker.iconDefault);
     }
 }
 
