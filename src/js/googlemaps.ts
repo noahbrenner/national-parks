@@ -59,8 +59,11 @@ class Marker extends google.maps.Marker {
     }
 }
 
+type Callback = (parkId?: string) => void;
+
 interface MapConstructorConfig {
-    markerHoverCallback: (parkId?: string) => void;
+    markerHoverCallback: Callback;
+    parkSelectCallback: Callback;
 }
 
 export class ParkMap {
@@ -72,9 +75,11 @@ export class ParkMap {
     public onMarkerMouseout: () => void;
     public onMarkerMouseover: () => void;
     public oregonBounds: google.maps.LatLngBounds;
+    public parkSelectCallback: Callback;
 
     constructor(config: MapConstructorConfig) {
         this.markers = [];
+        this.parkSelectCallback = config.parkSelectCallback;
 
         /* === Initialize and configure the map === */
 
@@ -150,6 +155,7 @@ export class ParkMap {
         document.body.appendChild(this.infoElement);
         this.infowindow.close();
         this.infowindow.set('marker', undefined);
+        this.parkSelectCallback();
     }
 
     /**
@@ -165,6 +171,7 @@ export class ParkMap {
         this.infowindow.setContent(this.infoElement);
         this.infowindow.open(this.map, marker);
         this.infowindow.set('marker', marker);
+        this.parkSelectCallback(marker.get('id'));
     }
 
     /** Add new markers to our markers array and display them on the map */

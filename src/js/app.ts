@@ -77,11 +77,10 @@ class ViewModel {
             this.parkMap = new ParkMap({
                 /** Set the "hovered" park by its park ID */
                 markerHoverCallback: (parkId?: string) => {
-                    const hoveredPark = parkId
-                        ? this.parks().find((park) => park.id === parkId)
-                        : undefined;
-
-                    this.hoveredPark(hoveredPark);
+                    this.hoveredPark(this.getParkById(parkId));
+                },
+                parkSelectCallback: (parkId?: string) => {
+                    this.currentPark(this.getParkById(parkId));
                 }
             });
 
@@ -92,6 +91,21 @@ class ViewModel {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    /** Retrieve an existing park */
+    public getParkById(id?: string): Park | undefined {
+        if (id === undefined) {
+            return undefined;
+        }
+
+        const result = this.parks().find((park) => park.id === id);
+
+        if (!result) {
+            throw new Error(`Could not find a park with ID "${id}"`);
+        }
+
+        return result;
     }
 
     /* === Event handlers === */
