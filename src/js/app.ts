@@ -115,7 +115,7 @@ class ViewModel {
      */
     public toggleHover = (park: Park, event: MouseEvent) => {
         if (this.parkMap) {
-            this.parkMap.setHoverStateById(park.id, event.type === 'mouseover');
+            this.parkMap.setHoverState(park.id, event.type === 'mouseover');
         }
     }
 }

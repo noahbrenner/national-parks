@@ -99,10 +99,8 @@ export class ParkMap {
         });
 
         this.infowindow.addListener('closeclick', () => {
-            // Explicitly close so that we can trigger the listener artificially
-            this.infowindow.close();
-            this.infowindow.set('marker', undefined);
-            // TODO Inform the ViewModel
+            // Handle all tasks that are needed when closing the infowindow
+            this.infoClose();
         });
 
         /* === Define event listener handlers for markers === */
@@ -120,20 +118,41 @@ export class ParkMap {
         };
 
         /** Open/close the infowindow at a marker (for 'click' event) */
-        // Use an IIFE to keep infowindow/map variables while still allowing
-        // `this` to refer to the clicked marker
-        this.onMarkerClick = ((infowindow, map) => {
+        this.onMarkerClick = (() => {
+            const parkMap = this;
+
             return function (this: Marker) {
-                if (infowindow.get('marker') === this) {
+                if (parkMap.infowindow.get('marker') === this) {
                     // Close infowindow if the already active marker was clicked
-                    google.maps.event.trigger(infowindow, 'closeclick');
+                    parkMap.infoClose();
                 } else {
-                    infowindow.set('marker', this);
-                    infowindow.open(map, this);
-                    // TODO Inform the ViewModel
+                    parkMap.infoOpen(this);
                 }
             };
-        })(this.infowindow, this.map);
+        })();
+    }
+
+    /** Retrieve an existing marker */
+    public getMarkerById(id: string) {
+        const result = this.markers.find((marker) => marker.get('id') === id);
+
+        if (!result) {
+            throw new Error(`Could not find a marker with ID "${id}"`);
+        }
+
+        return result;
+    }
+
+    /** Close the infowindow */
+    public infoClose() {
+        this.infowindow.close();
+        this.infowindow.set('marker', undefined);
+    }
+
+    /** Open the infowindow on the specified marker */
+    public infoOpen(marker: Marker) {
+        this.infowindow.open(this.map, marker);
+        this.infowindow.set('marker', marker);
     }
 
     /** Add new markers to our markers array and display them on the map */
@@ -153,14 +172,8 @@ export class ParkMap {
     }
 
     /** Update the display of a marker as if its hover state were changed */
-    public setHoverStateById(id: string, hover: boolean) {
-        const target = this.markers.find((marker) => marker.get('id') === id);
-
-        if (target) {
-            target.setHovered(hover);
-        } else {
-            throw new Error(`Could not find marker with ID "${id}"`);
-        }
+    public setHoverState(parkId: string, hover: boolean) {
+        this.getMarkerById(parkId).setHovered(hover);
     }
 }
 
