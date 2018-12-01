@@ -51,8 +51,6 @@ class Marker extends google.maps.Marker {
             position: park.latLng,
             title: park.name
         });
-
-        this.set('id', park.id);
     }
 
     /** Set the color of a marker icon to represent a hover state */
@@ -66,6 +64,7 @@ interface MapConstructorConfig {
 }
 
 export class ParkMap {
+    public infoElement: HTMLElement;
     public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
     public markers: Marker[];
@@ -94,9 +93,8 @@ export class ParkMap {
 
         /* === Initialize and configure the infowindow === */
 
-        this.infowindow = new google.maps.InfoWindow({
-            content: document.getElementById('infowindow') as HTMLElement
-        });
+        this.infowindow = new google.maps.InfoWindow();
+        this.infoElement = document.getElementById('infowindow') as HTMLElement;
 
         this.infowindow.addListener('closeclick', () => {
             // Handle all tasks that are needed when closing the infowindow
@@ -145,12 +143,26 @@ export class ParkMap {
 
     /** Close the infowindow */
     public infoClose() {
+        // If our infowindow content is removed from the DOM, Knockout will
+        // stop tracking it. Since calling `infowindow.close()` would cause
+        // exactly that to happen, we'll move our content out of the infowindow
+        // before closing it.
+        document.body.appendChild(this.infoElement);
         this.infowindow.close();
         this.infowindow.set('marker', undefined);
     }
 
-    /** Open the infowindow on the specified marker */
-    public infoOpen(marker: Marker) {
+    /**
+     * Open the infowindow on the specified marker
+     * @param target - Either a Marker instance or a parkID
+     */
+    public infoOpen(target: Marker | string) {
+        const marker = target instanceof Marker
+            ? target
+            : this.getMarkerById(target);
+
+        // Move infowindow content back to the infowindow before opening
+        this.infowindow.setContent(this.infoElement);
         this.infowindow.open(this.map, marker);
         this.infowindow.set('marker', marker);
     }

@@ -102,10 +102,22 @@ class ViewModel {
      * *is* already the current park, unset the current park.
      */
     public selectPark = (park: Park) => {
-        if (this.currentPark() === park) {
-            this.currentPark(undefined);
+        const newPark = this.currentPark() === park
+            ? undefined // Unset if it's already the current park
+            : park; // Otherwise, set it as the new one
+
+        this.currentPark(newPark);
+
+        // Only continue if the map has loaded
+        if (!this.parkMap) {
+            return;
+        }
+
+        // Update the map to reflect the status of the current park
+        if (newPark) {
+            this.parkMap.infoOpen(newPark.id);
         } else {
-            this.currentPark(park);
+            this.parkMap.infoClose();
         }
     }
 
