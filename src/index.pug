@@ -35,6 +35,7 @@ html(lang="en-us")
 
     //- At runtime, this block is inserted into a Google Map infowindow
     section(data-bind="with: currentPark")#infowindow.modal
+      h1 #[span(data-bind="text: name")] #[a(data-bind="attr: {href: website}") (open website)]
       h1
         | #[span(data-bind="text: name")]
         | #[a(data-bind="attr: {href: website}") (open website)]
