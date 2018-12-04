@@ -2,12 +2,19 @@ import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Promise} from 'es6-promise';
 import {Park} from './app';
 
-class Marker extends google.maps.Marker {
-    private static iconDefault: google.maps.Symbol;
-    private static iconHovered: google.maps.Symbol;
+declare class Marker extends google.maps.Marker {
+    public setHovered: (hover: boolean) => void;
+    constructor(park: Park, map: google.maps.Map);
+}
 
+/**
+ * Return a custom Marker class which extends `google.maps.Marker`.
+ * We need to create this class dynamically because the Google Maps API might
+ * not be available at the time this script is parsed.
+ */
+function createMarkerClass(): typeof Marker {
     /** Create a map marker icon with the specified fill color */
-    private static createMarkerIcon(color: string): google.maps.Symbol {
+    function createMarkerIcon(color: string): google.maps.Symbol {
         /*
          * We're using the "place" icon from Material Design Icons via the
          * `@mdi/js` npm package (which gives us access to the SVG path and
@@ -30,33 +37,26 @@ class Marker extends google.maps.Marker {
         };
     }
 
-    /** Create marker icons if they don't exist yet. */
-    private static ensureMarkerIcons() {
-        if (!Marker.iconDefault || !Marker.iconHovered) {
-            Marker.iconDefault = Marker.createMarkerIcon('red');
-            Marker.iconHovered = Marker.createMarkerIcon('yellow');
+    // tslint:disable-next-line:no-shadowed-variable
+    return class Marker extends google.maps.Marker {
+        private static iconDefault = createMarkerIcon('red');
+        private static iconHovered = createMarkerIcon('yellow');
+
+        constructor(park: Park, map: google.maps.Map) {
+            super({
+                animation: google.maps.Animation.DROP,
+                icon: Marker.iconDefault,
+                map,
+                position: park.latLng,
+                title: park.name
+            });
         }
-    }
 
-    constructor(park: Park, map: google.maps.Map) {
-        // Make sure icons exist. We're doing this in the constructor because
-        // we can't guarantee that Google maps will be loaded when the class is
-        // defined, but it *will* be loaded before instances are created.
-        Marker.ensureMarkerIcons();
-
-        super({
-            animation: google.maps.Animation.DROP,
-            icon: Marker.iconDefault,
-            map,
-            position: park.latLng,
-            title: park.name
-        });
-    }
-
-    /** Set the color of a marker icon to represent a hover state */
-    public setHovered(hover: boolean) {
-        this.setIcon(hover ? Marker.iconHovered : Marker.iconDefault);
-    }
+        /** Set the color of a marker icon to represent a hover state */
+        public setHovered(hover: boolean) {
+            this.setIcon(hover ? Marker.iconHovered : Marker.iconDefault);
+        }
+    };
 }
 
 type Callback = (parkId?: string) => void;
@@ -67,6 +67,7 @@ interface MapConstructorConfig {
 }
 
 export class ParkMap {
+    public Marker = createMarkerClass();
     public infoElement: HTMLElement;
     public infowindow: google.maps.InfoWindow;
     public map: google.maps.Map;
@@ -163,7 +164,7 @@ export class ParkMap {
      * @param target - Either a Marker instance or a parkID
      */
     public infoOpen(target: Marker | string) {
-        const marker = target instanceof Marker
+        const marker = target instanceof this.Marker
             ? target
             : this.getMarkerById(target);
 
@@ -178,7 +179,7 @@ export class ParkMap {
     public initMarkers(parks: Park[]) {
         this.markers.push(...parks.map((park) => {
             // Create a new marker
-            const marker = new Marker(park, this.map);
+            const marker = new this.Marker(park, this.map);
 
             marker.set('id', park.id);
 
