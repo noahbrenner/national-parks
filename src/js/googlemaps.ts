@@ -1,5 +1,4 @@
 import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
-import {Promise} from 'es6-promise';
 import {Park} from './app';
 
 declare class Marker extends google.maps.Marker {

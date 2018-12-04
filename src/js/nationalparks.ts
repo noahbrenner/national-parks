@@ -1,5 +1,3 @@
-import {Promise} from 'es6-promise';
-
 export interface ParkData {
     id: string;
     address: string;

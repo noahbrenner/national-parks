@@ -5,9 +5,15 @@ const googleApiKey = (
     process.env.GOOGLE_MAPS_API_KEY || 'AIzaSyAgWqPCo0aCPPpcX3WQQFXrVTzEojNJzJg'
 );
 
+const polyfillFeatures = [
+    'Array.prototype.find',
+    'Promise'
+];
+
 // These values will be accessible from `.pug` template files
 exports.locals = {
     googleApiKey,
+    polyfillFeatures: polyfillFeatures.join(','),
     web: {
         noah: 'https://noahbrenner.github.io/',
         repo: 'https://github.com/noahbrenner/national-parks',
