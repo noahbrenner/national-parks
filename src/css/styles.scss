@@ -2,6 +2,9 @@ $sidebar-background: #eee;
 $park-hover-background: #ddd;
 $park-active-background: #ffc;
 $park-active-border: #000;
+$favorite-default-color: #999;
+$favorite-hover-color: #f88;
+$favorite-selected-color: #ff0;
 
 /* === General styles === */
 
@@ -69,8 +72,16 @@ nav {
   & li {
     display: flex;
     align-items: center;
+    font-size: 1.25em;
+    line-height: 1em;
+  }
+
+  & a {
+    flex: 1;
     border: 1px solid transparent;
     border-radius: 5px;
+    padding: 0.5em;
+    font-weight: bold;
 
     &:hover,
     &.hover {
@@ -81,25 +92,30 @@ nav {
       border-color: $park-active-border;
       background: $park-active-background;
     }
+  }
 
+  // Ideas for custom checkbox styling from: https://css-tricks.com/the-checkbox-hack/
+  & label {
     &:before {
       content: "☆";
       display: inline-block;
       padding-right: 0.5em;
-      color: #999;
+      color: $favorite-default-color;
+      font-weight: bold;
     }
 
-    &.favorite:before {
-      content: "★";
-      color: #ff0;
+    &:hover:before {
+      color: $favorite-hover-color;
     }
   }
 
-  & a {
-    flex: 1;
-    line-height: 2em;
-    font-size: 1.25em;
-    font-weight: bold;
+  & input {
+    display: none;
+
+    &:checked + label:before {
+      content: "★";
+      color: $favorite-selected-color;
+    }
   }
 }
 

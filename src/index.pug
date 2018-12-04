@@ -21,9 +21,25 @@ html(lang="en-us")
           label(for="filter-select") Filter:
           select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")
       nav
+        //- Define strings for use in `data-bind` attribute of `<a>` tag below
+        -
+          const parkEvents = [
+            'click: $root.selectPark',
+            'mouseover: $root.toggleHover',
+            'mouseout: $root.toggleHover'
+          ].join(', ');
+
+          const parkClasses = [
+            'hover: isHovered',
+            'active: isCurrentPark'
+          ].join(', ');
+
         ul(data-bind="foreach: visibleParks")
-          li(data-bind="css: {hover: isHovered, active: isCurrentPark}")
-            a(href="#", data-bind="text: name, event: {click: $root.selectPark, mouseover: $root.toggleHover, mouseout: $root.toggleHover}")
+          li
+            input(type="checkbox", data-bind="checked: isFavorite, attr: {id: $index}")
+            label(title="Toggle favorite", data-bind="attr: {for: $index}")
+            a(href="#",
+              data-bind=`text: name, event: {${parkEvents}}, css: {${parkClasses}}`)
       footer
         p Data from the #[a(href=web.nps) National Parks Service API]
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]
