@@ -195,6 +195,16 @@ export class ParkMap {
     public setHoverState(parkId: string, hover: boolean) {
         this.getMarkerById(parkId).setHovered(hover);
     }
+
+    /** Make visible only those markers whose IDs are provided */
+    public setVisibleMarkers(parkIds: string[]) {
+        this.markers.forEach((marker) => {
+            marker.setMap(
+                // Set to `this.map` to show the marker, `null` to hide it
+                parkIds.includes(marker.get('id')) ? this.map : null
+            );
+        });
+    }
 }
 
 /**

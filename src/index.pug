@@ -19,14 +19,9 @@ html(lang="en-us")
           button#show-favorites Show favorites
         div.filter
           label(for="filter-select") Filter:
-          select#filter-select
-            option(value="") None
-
-            // ko foreach: parkTypes
-            option(data-bind="text: $data, attr: {value: $data}")
-            // /ko
+          select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")
       nav
-        ul(data-bind="foreach: parks")
+        ul(data-bind="foreach: visibleParks")
           li(data-bind="css: {hover: isHovered, active: isCurrentPark}")
             a(href="#", data-bind="text: name, event: {click: $root.selectPark, mouseover: $root.toggleHover, mouseout: $root.toggleHover}")
       footer

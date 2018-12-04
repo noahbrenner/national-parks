@@ -7,6 +7,7 @@ const googleApiKey = (
 
 const polyfillFeatures = [
     'Array.prototype.find',
+    'Array.prototype.includes',
     'Promise'
 ];
 

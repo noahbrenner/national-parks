@@ -46,14 +46,27 @@ class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
     public hoveredPark: KnockoutObservable<Park | undefined>;
     public parkMap?: ParkMapType;
+    public parkTypeFilter: KnockoutObservable<string | undefined>;
     public parkTypes: KnockoutObservableArray<string>;
     public parks: KnockoutObservableArray<Park>;
+
+    public visibleParks = ko.pureComputed(() => {
+        const parkType = this.parkTypeFilter();
+        let result = this.parks();
+
+        if (parkType) {
+            result = result.filter((park) => park.parkType === parkType);
+        }
+
+        return result;
+    });
 
     constructor() {
         this.parks = ko.observableArray();
         this.currentPark = ko.observable();
         this.hoveredPark = ko.observable();
         this.parkTypes = ko.observableArray();
+        this.parkTypeFilter = ko.observable();
 
         // Fetch park data from the National Parks Service
         const parksPromise = getParksAsync().then((parks) => {
@@ -87,7 +100,13 @@ class ViewModel {
 
             // Display map markers once the park array is also initialized
             parksPromise.then(() => {
-                this.parkMap!.initMarkers(this.parks());
+                this.parkMap!.initMarkers(this.visibleParks());
+
+                // Update the map whenever the list of visible markers changes
+                ko.computed(() => {
+                    const parkIds = this.visibleParks().map((park) => park.id);
+                    this.parkMap!.setVisibleMarkers(parkIds);
+                });
             });
         }).catch((error) => {
             console.log(error);
