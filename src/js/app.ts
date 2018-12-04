@@ -2,6 +2,7 @@ import * as ko from 'knockout';
 // Use an alias for `ParkMap` since we're only importing it for the type
 // information. The real constructor is provided later from a resolved Promise.
 // This avoids shadowing the variable name at that point.
+import {awaitDom} from './await';
 import getMapConstructorAsync, {ParkMap as ParkMapType} from './googlemaps';
 import getParksAsync, {ParkData} from './nationalparks';
 
@@ -146,4 +147,7 @@ class ViewModel {
     }
 }
 
-ko.applyBindings(new ViewModel());
+// Wait for the DOM to load before applying the ViewModel
+awaitDom.then(() => {
+    ko.applyBindings(new ViewModel());
+});

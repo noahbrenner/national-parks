@@ -1,5 +1,6 @@
 import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Park} from './app';
+import {awaitDom, awaitGoogleMaps} from './await';
 
 declare class Marker extends google.maps.Marker {
     public setHovered: (hover: boolean) => void;
@@ -196,55 +197,12 @@ export class ParkMap {
     }
 }
 
-/** Initialize our map only after the DOM has loaded */
-function getMapConstructorOnLoadAsync(): Promise<typeof ParkMap> {
-    return new Promise((resolve) => {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                resolve(ParkMap);
-            });
-        } else {
-            resolve(ParkMap);
-        }
-    });
-}
-
 /**
- * Initialize our map once both Google Maps and the DOM have loaded. We'll
- * assume Google Maps has loaded if `window.google` exists. This check is
- * necessary because we're loading scripts asynchronously and we can't predict
- * whether ours or Google's will load first.
+ * Return a Promise which resolves with the ParkMap constructor.
+ *
+ * The promise will only resolve after both the Google Maps API and the DOM
+ * have loaded, since both are required before the constructor can be used.
  */
 export default function getMapConstructorAsync(): Promise<typeof ParkMap> {
-    return new Promise((resolve, reject) => {
-        const mapScript = document.getElementById('maps-script') as HTMLElement;
-
-        // Reject if the script doesn't load after 5 seconds
-        const timeout = setTimeout(() => {
-            mapScript.removeEventListener('load', resolveInit);
-            reject('The Google Maps API took too long to load.'
-                   + ' Try reloading the page or visiting again later.');
-        }, 5_000);
-
-        /** Handle the steps necessary for resolving our returned Promise */
-        const resolveInit = () => {
-            clearTimeout(timeout);
-            resolve(getMapConstructorOnLoadAsync());
-        };
-
-        if ('google' in window) {
-            // We can resolve immediately
-            resolveInit();
-        } else {
-            // Resolve once Google script has loaded
-            mapScript.addEventListener('load', resolveInit);
-
-            // Reject if the script fails to load
-            mapScript.addEventListener('error', () => {
-                mapScript.removeEventListener('load', resolveInit);
-                reject('Failed to load Google Maps API.'
-                       + ' Try reloading the page.');
-            });
-        }
-    });
+    return Promise.all([awaitDom, awaitGoogleMaps]).then(() => ParkMap);
 }
