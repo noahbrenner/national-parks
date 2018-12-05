@@ -177,7 +177,10 @@ class ViewModel {
     }
 }
 
-// Wait for the DOM to load before applying the ViewModel
+// Initialize the ViewModel right away
+const viewModel = new ViewModel();
+
+// Wait for the DOM to load before applying the ViewModel to it
 awaitDom.then(() => {
-    ko.applyBindings(new ViewModel());
+    ko.applyBindings(viewModel);
 });
