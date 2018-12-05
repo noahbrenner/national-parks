@@ -47,12 +47,12 @@ main {
 }
 
 .sidebar {
-  & h1 {
+  h1 {
     @extend %sidebar-headings;
     font-size: 1.5em;
   }
 
-  & h2 {
+  h2 {
     @extend %sidebar-headings;
     font-size: 1.1em;
   }
@@ -103,19 +103,19 @@ nav {
   font-size: 1.25em;
   font-weight: bold;
 
-  & ul {
+  ul {
     margin: 0.8em 0;
     padding: 0;
     list-style: none;
   }
 
-  & li {
+  li {
     display: flex;
     align-items: center;
     line-height: 1em;
   }
 
-  & a {
+  a {
     flex: 1;
     border: 1px solid transparent;
     border-radius: 5px;
@@ -133,7 +133,7 @@ nav {
   }
 
   // Ideas for custom checkbox styling from: https://css-tricks.com/the-checkbox-hack/
-  & label {
+  label {
     display: none; /* Hide when the page first loads */
 
     &[for] {
@@ -152,7 +152,7 @@ nav {
     }
   }
 
-  & input {
+  input {
     display: none;
 
     &:checked + label:before {
