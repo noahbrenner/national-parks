@@ -42,6 +42,7 @@ html(lang="en-us")
             label(title="Toggle favorite", data-bind="attr: {for: $index}")
             a(href="#",
               data-bind=`text: name, event: {${parkEvents}}, css: {${parkClasses}}`)
+        p(data-bind="visible: visibleParks().length === 0") No parks to display
       footer
         p Data from the #[a(href=web.nps) National Parks Service API]
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]
