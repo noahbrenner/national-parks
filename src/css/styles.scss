@@ -58,6 +58,43 @@ main {
   }
 }
 
+.favorites-toggle {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+
+  label {
+    $label-height: 36px;
+    $half-label-height: $label-height / 2;
+
+    border: 1px solid #556;
+    padding: 0.5em 1em;
+    min-width: 35%;
+    height: $label-height;
+    background: #fff;
+    color: #445;
+    text-align: center;
+
+    &:first-of-type {
+      border-radius: $half-label-height 0 0 $half-label-height;
+    }
+
+    &:last-of-type {
+      border-radius: 0 $half-label-height $half-label-height 0;
+      border-left: none;
+    }
+  }
+
+  input {
+    display: none;
+
+    &:checked + label {
+      background: #556;
+      color: #fff;
+    }
+  }
+}
+
 .filter {
   margin: 1em 0;
 }

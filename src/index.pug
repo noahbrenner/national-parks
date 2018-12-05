@@ -15,8 +15,10 @@ html(lang="en-us")
         h1 Oregon National Parks
         h2 Created by #[a(href=web.noah) Noah Brenner] — #[a(href=web.repo) Source on GitHub]
         div.favorites-toggle
-          button#show-all Show everything
-          button#show-favorites Show favorites
+          each option in ['all', 'favorites']
+            input(type="radio", name="only-show-favorites", id=option,
+              value=`${option === 'favorites'}`, data-bind="checked: onlyShowFavorites")
+            label(for=option)= `Show ${option}`
         div.filter
           label(for="filter-select") Filter:
           select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")

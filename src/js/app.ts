@@ -45,14 +45,24 @@ export class Park {
 class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
     public hoveredPark: KnockoutObservable<Park | undefined>;
+    public onlyShowFavorites: KnockoutObservable<string>;
     public parkMap?: ParkMapType;
     public parkTypeFilter: KnockoutObservable<string | undefined>;
     public parkTypes: KnockoutObservableArray<string>;
     public parks: KnockoutObservableArray<Park>;
 
+    public favoriteParks = ko.pureComputed(() => {
+        return this.parks().filter((park) => park.isFavorite());
+    });
+
     public visibleParks = ko.pureComputed(() => {
+        // The value of `onlyShowFavorites` is a string rather than real boolean
+        // because it is set to the `value` attribute of an `<input>` element.
+        let result = this.onlyShowFavorites() === 'true'
+            ? this.favoriteParks()
+            : this.parks();
+
         const parkType = this.parkTypeFilter();
-        let result = this.parks();
 
         if (parkType) {
             result = result.filter((park) => park.parkType === parkType);
@@ -67,6 +77,7 @@ class ViewModel {
         this.hoveredPark = ko.observable();
         this.parkTypes = ko.observableArray();
         this.parkTypeFilter = ko.observable();
+        this.onlyShowFavorites = ko.observable('false');
 
         // Fetch park data from the National Parks Service
         const parksPromise = getParksAsync().then((parks) => {
