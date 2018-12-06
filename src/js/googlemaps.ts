@@ -199,10 +199,11 @@ export class ParkMap {
     /** Make visible only those markers whose IDs are provided */
     public setVisibleMarkers(parkIds: string[]) {
         this.markers.forEach((marker) => {
-            marker.setMap(
-                // Set to `this.map` to show the marker, `null` to hide it
-                parkIds.includes(marker.get('id')) ? this.map : null
-            );
+            if (parkIds.includes(marker.get('id'))) {
+                marker.setMap(this.map);
+            } else {
+                marker.setMap(null);
+            }
         });
     }
 }
