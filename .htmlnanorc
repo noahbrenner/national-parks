@@ -1,0 +1,6 @@
+{
+    // Keep Knockout.js comments in HTML, even when minifying
+    // https://github.com/parcel-bundler/parcel/issues/1218
+    // https://github.com/parcel-bundler/parcel/issues/429
+    removeComments: false
+}
