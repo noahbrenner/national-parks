@@ -7,18 +7,25 @@ import getMapConstructorAsync, {ParkMap as ParkMapType} from './googlemaps';
 import getParksAsync, {ParkAddress, ParkData} from './nationalparks';
 
 /** Represent an individual National Park */
-export class Park {
+export class Park implements ParkData {
+    /*
+     * The TypeScript compiler isn't understanding that `Object.assign` in the
+     * constructor means that all required properties are definitely assigned.
+     * As a workaround, we're asserting that all required properties coming from
+     * `parkObj` are definitely assigned by putting a `!` after each one here:
+     */
     public address?: ParkAddress;
-    public description: string;
-    public id: string;
+    public description!: string;
+    public id!: string;
     public imgAlt?: string;
     public imgCaption?: string;
     public imgUrl?: string;
-    public isFavorite: KnockoutObservable<boolean>;
-    public latLng: google.maps.LatLngLiteral;
-    public name: string;
-    public parkType: string;
-    public website: string;
+    public isFavorite!: KnockoutObservable<boolean>;
+    public latLng!: google.maps.LatLngLiteral;
+    public name!: string;
+    public parent: ViewModel;
+    public parkType!: string;
+    public website!: string;
 
     public isCurrentPark = ko.pureComputed(() => {
         return this.parent.currentPark() === this;
@@ -28,18 +35,10 @@ export class Park {
         return this.parent.hoveredPark() === this;
     });
 
-    constructor(parkObj: ParkData, public parent: ViewModel) {
-        this.address = parkObj.address;
-        this.description = parkObj.description;
-        this.id = parkObj.id;
-        this.imgAlt = parkObj.imgAlt;
-        this.imgCaption = parkObj.imgCaption;
-        this.imgUrl = parkObj.imgUrl;
+    constructor(parkObj: ParkData, parent: ViewModel) {
+        Object.assign(this, parkObj);
         this.isFavorite = ko.observable(false);
-        this.latLng = parkObj.latLng;
-        this.name = parkObj.name;
-        this.parkType = parkObj.parkType;
-        this.website = parkObj.website;
+        this.parent = parent;
     }
 }
 
