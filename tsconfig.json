@@ -13,5 +13,8 @@
   },
   "include": [
     "src/js/*.ts"
+  ],
+  "exclude": [
+    "src/js/*.d.ts"
   ]
 }

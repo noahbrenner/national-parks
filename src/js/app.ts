@@ -4,14 +4,15 @@ import * as ko from 'knockout';
 // This avoids shadowing the variable name at that point.
 import {awaitDom} from './await';
 import getMapConstructorAsync, {ParkMap as ParkMapType} from './googlemaps';
-import getParksAsync, {ParkData} from './nationalparks';
+import getParksAsync, {ParkAddress, ParkData} from './nationalparks';
 
 /** Represent an individual National Park */
 export class Park {
-    public address: string;
+    public address?: ParkAddress;
     public description: string;
     public id: string;
-    public imgCaption?: string; // And/or credit, title
+    public imgAlt?: string;
+    public imgCaption?: string;
     public imgUrl?: string;
     public isFavorite: KnockoutObservable<boolean>;
     public latLng: google.maps.LatLngLiteral;
@@ -31,9 +32,10 @@ export class Park {
         this.address = parkObj.address;
         this.description = parkObj.description;
         this.id = parkObj.id;
+        this.imgAlt = parkObj.imgAlt;
         this.imgCaption = parkObj.imgCaption;
         this.imgUrl = parkObj.imgUrl;
-        this.isFavorite = ko.observable(parkObj.id === 'a');
+        this.isFavorite = ko.observable(false);
         this.latLng = parkObj.latLng;
         this.name = parkObj.name;
         this.parkType = parkObj.parkType;

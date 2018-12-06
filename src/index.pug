@@ -54,8 +54,14 @@ html(lang="en-us")
       h2(data-bind="text: parkType")
 
       // ko if: imgUrl
-      img(data-bind="attr: {src: imgUrl, title: imgCaption}")
+      img(data-bind="attr: {src: imgUrl, alt: imgAlt, title: imgCaption}")
       // /ko
 
       p(data-bind="text: description")
-      p(data-bind="text: address")
+
+      // ko if: address
+      p(data-bind="with: address")
+        span(data-bind="text: street")
+        br
+        span(data-bind="text: cityState")
+      // /ko
