@@ -189,6 +189,8 @@ export class ParkMap {
 
             return marker;
         }));
+
+        this.zoomToVisibleMarkers();
     }
 
     /** Update the display of a marker as if its hover state were changed */
@@ -205,6 +207,23 @@ export class ParkMap {
                 marker.setMap(null);
             }
         });
+
+        this.zoomToVisibleMarkers();
+    }
+
+    public zoomToVisibleMarkers() {
+        const bounds = new google.maps.LatLngBounds();
+
+        // Always include the entire state of Oregon
+        // This is especially important when 0 or 1 markers are visible
+        bounds.union(this.oregonBounds);
+
+        this.markers
+            .filter((marker) => marker.getMap() === this.map)
+            .map((marker) => marker.getPosition())
+            .forEach((position) => bounds.extend(position));
+
+        this.map.fitBounds(bounds);
     }
 }
 

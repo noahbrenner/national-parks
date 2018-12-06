@@ -143,6 +143,13 @@ class ViewModel {
     /* === Event handlers === */
     // These handlers are arrow functions so that `this` is always the ViewModel
 
+    /** Fit visible markers inside the map; no-op before map is initialized */
+    public resetMapZoom = () => {
+        if (this.parkMap) {
+            this.parkMap.zoomToVisibleMarkers();
+        }
+    }
+
     /**
      * Set the current park to `park` if it isn't already set that way. If it
      * *is* already the current park, unset the current park.
