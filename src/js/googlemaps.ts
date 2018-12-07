@@ -100,7 +100,7 @@ export class ParkMap {
         /* === Initialize and configure the infowindow === */
 
         this.infowindow = new google.maps.InfoWindow();
-        this.infoElement = document.getElementById('infowindow') as HTMLElement;
+        this.infoElement = document.querySelector('.infowindow') as HTMLElement;
 
         this.infowindow.addListener('closeclick', () => {
             // Handle all tasks that are needed when closing the infowindow
