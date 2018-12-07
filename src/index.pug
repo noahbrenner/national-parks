@@ -18,7 +18,7 @@ html(lang="en-us")
             label(for=option)= `Show ${option}`
         div.filter
           label(for="filter-select") Filter:
-          select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")
+          select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")#filter-select
         button(data-bind="click: resetMapZoom") Reset map view
       nav
         //- Define strings for use in `data-bind` attribute of `<a>` tag below
