@@ -35,9 +35,9 @@ export class Park implements ParkData {
         return this.parent.hoveredPark() === this;
     });
 
-    constructor(parkObj: ParkData, parent: ViewModel) {
+    constructor(parkObj: ParkData, favorites: string[], parent: ViewModel) {
         Object.assign(this, parkObj);
-        this.isFavorite = ko.observable(false);
+        this.isFavorite = ko.observable(favorites.includes(parkObj.id));
         this.parent = parent;
     }
 }
@@ -82,8 +82,11 @@ class ViewModel {
 
         // Fetch park data from the National Parks Service
         const parksPromise = getParksAsync().then((parks) => {
+            const favorites = this.dataLoad();
+
             // Create `Park` instances and save them in our model
-            this.parks.push(...parks.map((park) => new Park(park, this)));
+            this.parks
+                .push(...parks.map((park) => new Park(park, favorites, this)));
 
             // Calculate a sorted list of unique park types
             const parkTypes = this.parks()
@@ -94,6 +97,13 @@ class ViewModel {
 
             // Add the park types to our model
             this.parkTypes.push(...parkTypes);
+
+            // Any time favorites change, save them to persistent storage.
+            // This is done *after* initializing parks to avoid redundant saves
+            // at load time (in case some parks are already set as favorites).
+            this.favoriteParks.subscribe(() => {
+                this.dataSave();
+            });
         }).catch((error) => {
             console.log(error);
         });
@@ -123,6 +133,49 @@ class ViewModel {
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    /** Return the list of favorite parks saved in `localStorage` */
+    public dataLoad(): string[] {
+        if ('localStorage' in window) {
+            const jsonData = localStorage.getItem('favorites');
+
+            if (jsonData) {
+                let favoriteIds;
+
+                try {
+                    favoriteIds = JSON.parse(jsonData);
+                } catch {
+                    // The JSON was invalid, so try setting it from scratch
+                    this.dataSave();
+                }
+
+                // Verify that the data has the structure we expect
+                if (
+                    favoriteIds instanceof Array
+                    && favoriteIds.every((id) => typeof id === 'string')
+                ) {
+                    return favoriteIds;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    /** Save the list of favorite parks to `localStorage` */
+    public dataSave() {
+        if ('localStorage' in window) {
+            const favoriteIds = this.favoriteParks().map((park) => park.id);
+            const jsonData = JSON.stringify(favoriteIds);
+
+            try {
+                localStorage.setItem('favorites', jsonData);
+            } catch {
+                // Storage has run out (may be set to `0`)
+                // Silently fail (gracefully degrade this feature)
+            }
+        }
     }
 
     /** Retrieve an existing park */
