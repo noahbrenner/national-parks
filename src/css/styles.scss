@@ -1,3 +1,5 @@
+@import '~sanitize.css';
+
 $sidebar-background: #eee;
 $park-hover-background: #ddd;
 $park-active-background: #ffc;
@@ -8,18 +10,9 @@ $favorite-selected-color: #ff0;
 
 /* === General styles === */
 
-*,
-:before,
-:after {
-  box-sizing: border-box;
-}
-
 html,
 body {
-  margin: 0;
-  padding: 0;
   height: 100%;
-  border: none;
 }
 
 /* === Major block content === */
@@ -54,7 +47,7 @@ main {
 
   h2 {
     @extend %sidebar-headings;
-    font-size: 1.1em;
+    font-size: 1em;
   }
 }
 
@@ -106,7 +99,6 @@ nav {
   ul {
     margin: 0.8em 0;
     padding: 0;
-    list-style: none;
   }
 
   li {
@@ -140,14 +132,14 @@ nav {
       display: block; /* Show once Knockout bindings have been applied */
     }
 
-    &:before {
+    &::before {
       content: "☆";
       display: inline-block;
       padding-right: 0.5em;
       color: $favorite-default-color;
     }
 
-    &:hover:before {
+    &:hover::before {
       color: $favorite-hover-color;
     }
   }
@@ -155,7 +147,7 @@ nav {
   input {
     display: none;
 
-    &:checked + label:before {
+    &:checked + label::before {
       content: "★";
       color: $favorite-selected-color;
     }

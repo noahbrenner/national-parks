@@ -18,7 +18,8 @@
   "dependencies": {
     "@mdi/js": "^3.0.39",
     "axios": "^0.18.0",
-    "knockout": "^3.4.2"
+    "knockout": "^3.4.2",
+    "sanitize.css": "^8.0.0"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.30.16",
