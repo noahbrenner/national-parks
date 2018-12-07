@@ -64,6 +64,11 @@ html(lang="en-us")
         span(data-bind="text: cityState")
       // /ko
 
+    section(data-bind="css: {error: errorMessage}").modal
+      div
+        h1 ERROR
+        p(data-bind="text: errorMessage")
+
     script(src=`https://cdn.polyfill.io/v2/polyfill.min.js?features=${polyfillFeatures}&callback=polyfillCallback`)
     script(async, defer, src=`https://maps.googleapis.com/maps/api/js?v=3&key=${googleApiKey}`)#maps-script
     script(async, defer, src="js/app.ts")

@@ -45,6 +45,7 @@ export class Park implements ParkData {
 /** Constructor for our Knockout ViewModel */
 class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
+    public errorMessage: KnockoutObservable<string | undefined>;
     public hoveredPark: KnockoutObservable<Park | undefined>;
     public onlyShowFavorites: KnockoutObservable<string>;
     public parkMap?: ParkMapType;
@@ -79,6 +80,7 @@ class ViewModel {
         this.parkTypes = ko.observableArray();
         this.parkTypeFilter = ko.observable();
         this.onlyShowFavorites = ko.observable('false');
+        this.errorMessage = ko.observable();
 
         // Fetch park data from the National Parks Service
         const parksPromise = getParksAsync().then((parks) => {
@@ -105,7 +107,7 @@ class ViewModel {
                 this.dataSave();
             });
         }).catch((error) => {
-            console.log(error);
+            this.errorMessage(error.message);
         });
 
         // Initialize the map and save our `ParkMap` instance in our model
@@ -131,7 +133,7 @@ class ViewModel {
                 });
             });
         }).catch((error) => {
-            console.log(error);
+            this.errorMessage(error.message);
         });
     }
 

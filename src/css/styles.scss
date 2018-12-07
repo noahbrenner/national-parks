@@ -169,3 +169,41 @@ nav {
     display: block; // Visible once moved inside the main element (the map)
   }
 }
+
+/*
+ * This modal is only for displaying errors that prevent the page from
+ * functioning (the map API or the National Parks Service data doesn't load).
+ * Therefore, it is not possible to close the modal once it has opened -- the
+ * page must be reloaded instead.
+ */
+.modal {
+  display: none; // Hidden by default
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+
+  &.error {
+    display: flex; // Visible if there is an error to display
+    justify-content: center;
+    align-items: center;
+  }
+
+  & div {
+    border: 7px solid #c00;
+    padding: 1em;
+    background: #fff;
+    width: 20em;
+    max-width: 100vw;
+  }
+
+  & h1 {
+    margin: 0;
+    text-align: center;
+  }
+
+  & p {
+    margin: 1em 0 0;
+    font-weight: bold;
+  }
+}
