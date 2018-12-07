@@ -4,6 +4,9 @@
 /// <reference path="./nps.d.ts" />
 
 import axios from 'axios';
+// Needed in order to reference environment variables during build process:
+// https://github.com/parcel-bundler/parcel/issues/305#issuecomment-352241629
+import * as process from 'process';
 
 /* === Interfaces === */
 
@@ -118,7 +121,8 @@ function extractParkData(parkAPIData: nps.response): ParkData[] {
 export default function getParksAsync(): Promise<ParkData[]> {
     return axios.get('https://developer.nps.gov/api/v1/parks', {
         params: {
-            api_key: 'Thr8LT84DrXqL0ugDQjfYjGO28D3CW0n1owKGoXi',
+            // Parcel inserts this environment variable value at build time
+            api_key: process.env.NATIONAL_PARKS_SERVICE_API_KEY,
             fields: 'addresses,images',
             stateCode: 'OR'
         },

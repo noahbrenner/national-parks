@@ -1,10 +1,3 @@
-// While it's not ideal to publish API keys on GitHub, these keys are used on
-// the client side of a publicly-accessible website, so it's not possible to
-// keep them secret, as it would be with server-side keys.
-const googleApiKey = (
-    process.env.GOOGLE_MAPS_API_KEY || 'AIzaSyAgWqPCo0aCPPpcX3WQQFXrVTzEojNJzJg'
-);
-
 const polyfillFeatures = [
     'Array.prototype.find',
     'Array.prototype.includes',
@@ -14,7 +7,7 @@ const polyfillFeatures = [
 
 // These values will be accessible from `.pug` template files
 exports.locals = {
-    googleApiKey,
+    googleApiKey: process.env.GOOGLE_MAPS_API_KEY,
     polyfillFeatures: polyfillFeatures.join(','),
     web: {
         noah: 'https://noahbrenner.github.io/',
