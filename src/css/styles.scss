@@ -257,6 +257,7 @@ footer {
 
 .infowindow {
   display: none; // Hidden by default
+  max-width: 500px;
 
   main & {
     display: block; // Visible once moved inside the main element (the map)
@@ -266,9 +267,16 @@ footer {
      * elements has higher specificity
      */
     img {
+      display: block;
+      margin: auto;
       max-width: 100%;
+      max-height: 450px;
       /* Help Google estimate infowindow height better before the image loads */
       min-height: 100px;
+
+      @media screen and (min-width: 800px) {
+        min-height: 250px;
+      }
     }
   }
 
