@@ -47,6 +47,7 @@ class ViewModel {
     public currentPark: KnockoutObservable<Park | undefined>;
     public errorMessage: KnockoutObservable<string | undefined>;
     public hoveredPark: KnockoutObservable<Park | undefined>;
+    public menuVisible: KnockoutObservable<boolean>;
     public onlyShowFavorites: KnockoutObservable<string>;
     public parkMap?: ParkMapType;
     public parkTypeFilter: KnockoutObservable<string | undefined>;
@@ -80,6 +81,7 @@ class ViewModel {
         this.parkTypes = ko.observableArray();
         this.parkTypeFilter = ko.observable();
         this.onlyShowFavorites = ko.observable('false');
+        this.menuVisible = ko.observable(true);
         this.errorMessage = ko.observable();
 
         // Fetch park data from the National Parks Service
@@ -237,6 +239,10 @@ class ViewModel {
         if (this.parkMap) {
             this.parkMap.setHoverState(park.id, event.type === 'mouseover');
         }
+    }
+
+    public toggleMenu = () => {
+        this.menuVisible(!this.menuVisible());
     }
 }
 

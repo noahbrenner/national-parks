@@ -22,9 +22,33 @@ body {
 }
 
 .sidebar {
+  position: fixed;
   padding: 1em;
-  flex-basis: 380px;
   background: $sidebar-background;
+  right: 0;
+  width: 90%;
+  height: 100%;
+  z-index: 1;
+  transform: translate(100%, 0);
+  transition: transform 0.25s ease;
+
+  @mixin sidebar-visible {
+    transform: translate(0, 0);
+  }
+
+  @media screen and (min-width: 500px) {
+    @include sidebar-visible;
+    position: static;
+    width: 300px;
+  }
+
+  @media screen and (min-width: 750px) {
+    width: 380px;
+  }
+
+  &.visible {
+    @include sidebar-visible;
+  }
 }
 
 main {
@@ -32,24 +56,49 @@ main {
   background: #adf; /* Approximate "water" color before map loads */
 }
 
-/* === Sidebar === */
+.menu-btn {
+  $border-style: 1px solid #333;
 
-%sidebar-headings {
-  margin: 0 0 18px;
-  text-align: center;
+  display: block;
+  position: fixed;
+  border-left: $border-style;
+  border-bottom: $border-style;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: #000;
+
+  @media screen and (min-width: 500px) {
+    display: none;
+  }
+
+  svg {
+    width: 36px;
+    height: 36px;
+    background: $sidebar-background;
+  }
 }
+
+/* === Sidebar === */
 
 .sidebar {
   display: flex;
   flex-direction: column;
 
+  h1,
+  h2 {
+    margin: 0 0 18px;
+
+    @media screen and (min-width: 450px) {
+      text-align: center;
+    }
+  }
+
   h1 {
-    @extend %sidebar-headings;
     font-size: 1.5em;
   }
 
   h2 {
-    @extend %sidebar-headings;
     font-size: 1em;
     font-weight: normal;
   }
@@ -109,15 +158,17 @@ main {
 
 .filter {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin: 1em;
+  margin: 1em 0;
 
   & label {
     padding-right: 1em;
+    white-space: nowrap;
   }
 
   & select {
-    flex: 1;
+    flex: 1 1;
   }
 }
 
@@ -189,9 +240,14 @@ nav {
 }
 
 footer {
+  p {
+    margin: 0.5em 0;
+  }
+
   & :first-child {
     margin-top: 0;
   }
+
   & :last-child {
     margin-bottom: 0;
   }
@@ -202,6 +258,25 @@ footer {
 
   main & {
     display: block; // Visible once moved inside the main element (the map)
+
+    /*
+     * This must be nested here, otherwise Google Map's selector for `img`
+     * elements has higher specificity
+     */
+    img {
+      max-width: 100%;
+      /* Help Google estimate infowindow height better before the image loads */
+      min-height: 100px;
+    }
+  }
+
+  h1 {
+    margin-top: 0;
+  }
+
+  a {
+    white-space: nowrap;
+    font-size: 16px;
   }
 }
 

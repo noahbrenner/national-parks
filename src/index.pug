@@ -7,7 +7,10 @@ html(lang="en-us")
     meta(name="viewport", content="initial-scale=1")
     link(rel="stylesheet", href="css/styles.scss")
   body
-    section.sidebar
+    a(href="#", data-bind="click: toggleMenu").menu-btn
+      svg(version="1.1", viewBox="0 0 24 24")
+        path(d=svgPathMenu)/
+    section(data-bind="css: {visible: menuVisible}").sidebar.visible
       header
         h1 Oregon National Parks
         h2 Created by #[a(href=web.noah) Noah Brenner] — #[a(href=web.repo) Source on GitHub]
@@ -42,8 +45,9 @@ html(lang="en-us")
               data-bind=`text: name, event: {${parkEvents}}, css: {${parkClasses}}`)
         p(data-bind="visible: visibleParks().length === 0") No parks to display
       footer
-        p Data from the #[a(href=web.nps) National Parks Service API]
-        p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js]
+        p Data from the #[a(href=web.nps) National Parks Service API].
+        p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js].
+        p Some icons from #[a(href=web.mdi) Material Design Icons].
     main#map
 
     //- At runtime, this block is inserted into a Google Map infowindow
