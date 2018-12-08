@@ -1,6 +1,8 @@
 Oregon National Parks Map (web app)
 ===================================
 
+Check out this app running live: https://noahbrenner.github.io/national-parks/
+
 A front end web app which provides information on National Parks in Oregon using data from the [National Parks Service][]. Built using [Knockout.js][] and the [Google Maps API][].
 
 Building the app
@@ -48,13 +50,13 @@ Run any of these as `$ npm run _____`:
 * `clean` — Delete the contents of the `dist/` directory.
 * `lint` — Check typings and lint TypeScript files.
 * `typewatch` — Check TypeScript typings and continue to run that check every time a `*.ts` file is modified.
-* `devbuild` — Build the app in development mode after running the `clean` task.
+* `devbuild` — Build the app in development mode after running the `clean` task (dev mode builds also include source maps).
 * `start` — Build the app in development mode and serve it locally on port 3000. Reload on HTML changes. Inject CSS changes without reloading (the same is done for JavaScript changes, but a manual reload is usually necessary in this case because Knockout bindings can't be applied more than once).
-* `build` — Build the app in production mode after running the `clean` task. Code is minified and tree-shaken.
+* `build` — Build the app in production mode after running the `clean` and `lint` tasks. Code is minified and tree-shaken.
 
 ### Using your own API keys (optional)
 
-The Google API key used here will only work on `localhost:3000`, so if you want to run on a different port or host, you'll need your own. You can get one by starting here: https://console.developers.google.com/
+The Google API key used here will only work on `localhost:3000` and `noahbrenner.github.io`, so if you want to run on a different port or host, you'll need your own key. You can get one by starting here: https://console.developers.google.com/
 
 The National Parks Service API has a rate limit, so you might consider getting your own API key, which you can do here: https://www.nps.gov/subjects/developer/get-started.htm
 
@@ -73,6 +75,7 @@ Example: `$ GOOGLE_MAPS_API_KEY=yourveryspecialkey npm run build`
 * Parcel (bundler)
 * TSLint (TypeScript linter)
 * Axios (AJAX library)
+* Polyfill.io (polyfill service)
 * Sanitize.css (style normalizer)
 * Material Design Icons (simple, clear icons)
 
