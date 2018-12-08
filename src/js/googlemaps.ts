@@ -85,6 +85,7 @@ export class ParkMap {
         /* === Initialize and configure the map === */
 
         this.map = new google.maps.Map(document.getElementById('map'), {
+            backgroundColor: '#adf', // The same default as in our CSS
             center: {lat: 43.8041334, lng: -120.5542012}, // Center of Oregon
             fullscreenControl: false,
             streetViewControl: false,
