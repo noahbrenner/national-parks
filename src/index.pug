@@ -26,6 +26,7 @@ html(lang="en-us")
           select(data-bind="value: parkTypeFilter, options: parkTypes, optionsCaption: 'None'")#filter-select
         button(data-bind="click: resetMapZoom") Reset map view
       nav
+        p Click on stars (☆) to mark your favorite parks!
         //- Define strings for use in `data-bind` attribute of `<a>` tag below
         -
           const parkEvents = [
