@@ -86,6 +86,8 @@ export class ParkMap {
 
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 43.8041334, lng: -120.5542012}, // Center of Oregon
+            fullscreenControl: false,
+            streetViewControl: false,
             zoom: 7
         });
 
