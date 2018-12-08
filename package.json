@@ -6,7 +6,7 @@
     "typewatch": "tsc --watch",
     "start": "parcel serve src/index.pug --port 3000",
     "predevbuild": "npm run clean",
-    "devbuild": "parcel build src/index.pug",
+    "devbuild": "parcel build src/index.pug --no-minify",
     "prebuild": "npm run clean && npm run lint",
     "build": "parcel build src/index.pug --experimental-scope-hoisting --public-url ./"
   },
