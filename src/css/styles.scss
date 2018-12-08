@@ -128,6 +128,7 @@ main {
     $label-height: 36px;
     $half-label-height: $label-height / 2;
 
+    display: block; /* IE 10 needs this to avoid putting space between labels */
     border: 1px solid #556;
     padding: 0.5em 1em;
     min-width: 35%;
@@ -192,6 +193,7 @@ nav {
 
   a {
     flex: 1;
+    display: block; /* IE 10 needs this for the <li> to match the <a> height */
     border: 1px solid transparent;
     border-radius: 5px;
     padding: 0.5em;
