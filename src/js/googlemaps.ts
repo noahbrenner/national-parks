@@ -7,6 +7,7 @@ import {awaitDom, awaitGoogleMaps} from './await';
  * though the actual class is created dynamically.
  */
 declare class Marker extends google.maps.Marker {
+    public bounce: () => void;
     public setHovered: (hover: boolean) => void;
     constructor(park: Park, map: google.maps.Map);
 }
@@ -55,6 +56,15 @@ function createMarkerClass(): typeof Marker {
                 position: park.latLng,
                 title: park.name
             });
+        }
+
+        /** Make the marker icon bounce for a short time */
+        public bounce() {
+            this.setAnimation(google.maps.Animation.BOUNCE);
+
+            setTimeout(() => {
+                this.setAnimation(null);
+            }, 1_500);
         }
 
         /** Set the color of a marker icon to represent a hover state */
@@ -177,6 +187,9 @@ export class ParkMap {
         const marker = target instanceof this.Marker
             ? target
             : this.getMarkerById(target);
+
+        // Draw attention to the marker whose info is being displayed
+        marker.bounce();
 
         // Move infowindow content back to the infowindow before opening
         this.infowindow.setContent(this.infoElement);
