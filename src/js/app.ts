@@ -241,6 +241,7 @@ class ViewModel {
         }
     }
 
+    /** Toggle the menu's visibility */
     public toggleMenu = () => {
         this.menuVisible(!this.menuVisible());
     }

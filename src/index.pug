@@ -8,6 +8,8 @@ html(lang="en-us")
     link(rel="stylesheet", href="css/styles.scss")
   body
     a(href="#", data-bind="click: toggleMenu").menu-btn
+      //- Some config was required to get Parcel to render valid SVG:
+      //- https://github.com/parcel-bundler/parcel/issues/1523#issuecomment-431527916
       svg(version="1.1", viewBox="0 0 24 24")
         path(d=svgPathMenu)/
     section(data-bind="css: {visible: menuVisible}").sidebar.visible
@@ -73,6 +75,7 @@ html(lang="en-us")
         h1 ERROR
         p(data-bind="text: errorMessage")
 
+    //- TODO Load polyfills async and move scripts back to `<head>`
     script(src=`https://cdn.polyfill.io/v2/polyfill.min.js?features=${polyfillFeatures}&callback=polyfillCallback`)
     script(async, defer, src=`https://maps.googleapis.com/maps/api/js?v=3&key=${googleApiKey}`)#maps-script
     script(async, defer, src="js/app.ts")

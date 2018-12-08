@@ -2,6 +2,10 @@ import {mdiMapMarker} from '@mdi/js'; // Material Design Icon as SVG path
 import {Park} from './app';
 import {awaitDom, awaitGoogleMaps} from './await';
 
+/*
+ * Declare the Marker class so that type declarations can refer to it even
+ * though the actual class is created dynamically.
+ */
 declare class Marker extends google.maps.Marker {
     public setHovered: (hover: boolean) => void;
     constructor(park: Park, map: google.maps.Map);
@@ -37,6 +41,7 @@ function createMarkerClass(): typeof Marker {
         };
     }
 
+    /** Represent a single marker on the map */
     // tslint:disable-next-line:no-shadowed-variable
     return class Marker extends google.maps.Marker {
         private static iconDefault = createMarkerIcon('red');
@@ -59,6 +64,7 @@ function createMarkerClass(): typeof Marker {
     };
 }
 
+// Define types to enable consistent, consise interface for ParkMap constructor
 type Callback = (parkId?: string) => void;
 
 interface MapConstructorConfig {
@@ -66,6 +72,7 @@ interface MapConstructorConfig {
     parkSelectCallback: Callback;
 }
 
+/** Constructor for our map interface */
 export class ParkMap {
     public Marker = createMarkerClass();
     public infoElement: HTMLElement;
@@ -214,6 +221,7 @@ export class ParkMap {
         this.zoomToVisibleMarkers();
     }
 
+    /** Reset the viewport to contain visible markers and hide infowindow */
     public zoomToVisibleMarkers() {
         const bounds = new google.maps.LatLngBounds();
 
