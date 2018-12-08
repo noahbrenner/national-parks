@@ -225,6 +225,7 @@ export class ParkMap {
             .map((marker) => marker.getPosition())
             .forEach((position) => bounds.extend(position));
 
+        this.infoClose();
         this.map.fitBounds(bounds);
     }
 }
