@@ -127,5 +127,13 @@ export default function getParksAsync(): Promise<ParkData[]> {
             stateCode: 'OR'
         },
         timeout: 5_000
-    }).then((response) => extractParkData(response.data));
+    }).then((response) => {
+        return extractParkData(response.data);
+    }).catch(() => {
+        // Throw an error with more human-friendly information
+        throw new Error(
+            'Failed to load data from National Parks Service.'
+            + ' Try reloading the page or visiting again later.'
+        );
+    });
 }

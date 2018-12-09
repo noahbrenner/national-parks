@@ -307,6 +307,7 @@ footer {
     display: flex; // Visible if there is an error to display
     justify-content: center;
     align-items: center;
+    z-index: 1;
   }
 
   & div {
