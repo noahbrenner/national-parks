@@ -12,7 +12,7 @@ Building the app
 
 * You'll first need to install [Node.js][], if you haven't done so already.
 * Clone this repo: `$ git clone https://github.com/noahbrenner/national-parks.git`
-* Install dependencies using [npm][] (which comes with Node)
+* Install dependencies using [npm][] (which comes with Node).
 
   ```bash
   $ cd path/to/local/repo
@@ -26,7 +26,7 @@ Building the app
 
 ### Build it!
 
-* Build the app and start up a development server
+* Build the app and start up a development server.
 
   ```bash
   $ npm start
