@@ -77,6 +77,6 @@ html(lang="en-us")
         p(data-bind="text: errorMessage")
 
     //- TODO Load polyfills async and move scripts back to `<head>`
-    script(src=`https://cdn.polyfill.io/v2/polyfill.min.js?features=${polyfillFeatures}&callback=polyfillCallback`)
+    script(src=`https://cdn.polyfill.io/v2/polyfill.min.js?features=${polyfillFeatures}`)
     script(async, defer, src=`https://maps.googleapis.com/maps/api/js?v=3&key=${googleApiKey}`)#maps-script
     script(async, defer, src="js/app.ts")
