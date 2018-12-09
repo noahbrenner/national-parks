@@ -50,7 +50,7 @@ Run any of these as `$ npm run _____`:
 * `clean` — Delete the contents of the `dist/` directory.
 * `lint` — Check typings and lint TypeScript files.
 * `typewatch` — Check TypeScript typings and continue to run that check every time a `*.ts` file is modified.
-* `devbuild` — Build the app in development mode after running the `clean` task (dev mode builds also include source maps).
+* `devbuild` — Build the app in development mode after running the `clean` task (dev mode builds are not minified and include source maps).
 * `start` — Build the app in development mode and serve it locally on port 3000. Reload on HTML changes. Inject CSS changes without reloading (the same is done for JavaScript changes, but a manual reload is usually necessary in this case because Knockout bindings can't be applied more than once).
 * `build` — Build the app in production mode after running the `clean` and `lint` tasks. Code is minified and tree-shaken.
 
