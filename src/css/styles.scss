@@ -1,4 +1,11 @@
-@import '~sanitize.css';
+// This syntax isn't working consistently for importing *.css instead of *.scss:
+// @import '~sanitize.css';
+// Details:
+// https://github.com/sass/node-sass/issues/2362
+// Eventually, SASS will add a @use directive, distinct from @import:
+// https://github.com/sass/sass/issues/1094
+// For now, we'll hard code the path and let Parcel handle inlining the file:
+@import url('../../node_modules/sanitize.css/sanitize.css');
 
 $sidebar-background: #9b7;
 $park-hover-background: darken($sidebar-background, 10%);
