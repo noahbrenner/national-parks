@@ -24,6 +24,38 @@ Building the app
   $ npm install
   ```
 
+### Configure API keys
+
+Before you can build the app, you'll need to provide 2 API keys. You could set them in environment variables at build time, but the easiest way is to save them in a file named `.env` in the project root; it will be read as part of the build process. This file is listed in `.gitignore` so it won't be accidentally committed.
+
+Below is the format of what you'll need to enter in the `.env` file. [See the next section](#api-keys) for how to get your API keys.
+
+```bash
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+NATIONAL_PARKS_SERVICE_API_KEY=your_nps_api_key
+```
+
+#### API keys
+
+API keys can be acquired and used for free, assuming you don't have enormous traffic where you're hosting the app.
+
+##### Google
+
+To get an API key for Google Maps, first register a web application at <https://console.developers.google.com/>. Once you've registered your application:
+
+* Make sure your new application name is shown near the top left of the page. If another of your Google-registered apps is shown there instead, select the correct app by first clicking on the currently-shown application name.
+* Go to the "Credentials" section, if you're not already there.
+* Click the blue "Create credentials" button and select "API key".
+* Since this API key will be used on the front end, it's best to restrict its access to only those services that are needed for the app. You can do this by editing the API key settings and selecting/entering:
+    - **Application restrictions:** "HTTP referrers (web sites)"
+    - **Accept requests from these HTTP referrers (web sites):** *The app URL, e.g. http://localhost:3000*
+    - **API restrictions:** "Maps JavaScript API"
+        - If the Maps API isn't present in the drop-down menu, you'll need to enable that API from this page first: https://console.developers.google.com/apis/library
+
+##### National Parks Service
+
+You can get an API key from the National Parks Service by filling out the very short form at <https://www.nps.gov/subjects/developer/get-started.htm>.
+
 ### Build it!
 
 * Build the app and start up a development server.
@@ -53,19 +85,6 @@ Run any of these as `$ npm run _____`:
 * `devbuild` — Build the app in development mode after running the `clean` task (dev mode builds are not minified and include source maps).
 * `start` — Build the app in development mode and serve it locally on port 3000. Reload on HTML changes. Inject CSS changes without reloading (the same is done for JavaScript changes, but a manual reload is usually necessary in this case because Knockout bindings can't be applied more than once).
 * `build` — Build the app in production mode after running the `clean` and `lint` tasks. Code is minified and tree-shaken.
-
-### Using your own API keys (optional)
-
-The Google API key used here will only work on `localhost:3000` and `noahbrenner.github.io`, so if you want to run on a different port or host, you'll need your own key. You can get one by starting here: https://console.developers.google.com/
-
-The National Parks Service API has a rate limit, so you might consider getting your own API key, which you can do here: https://www.nps.gov/subjects/developer/get-started.htm
-
-When building the app, you can specify either or both of these API keys using environment variables (or by editing the `.env` file). The relevant environment variables are:
-
-* `GOOGLE_MAPS_API_KEY`
-* `NATIONAL_PARKS_SERVICE_API_KEY`
-
-Example: `$ GOOGLE_MAPS_API_KEY=yourveryspecialkey npm run build`
 
 ### Languages/tools/libraries used (that weren't mentioned already)
 
