@@ -122,7 +122,7 @@ export default function getParksAsync(): Promise<ParkData[]> {
     return axios.get('https://developer.nps.gov/api/v1/parks', {
         params: {
             // Parcel inserts this environment variable value at build time
-            api_key: process.env.NATIONAL_PARKS_SERVICE_API_KEY,
+            api_key: process.env.NATIONAL_PARK_SERVICE_API_KEY,
             fields: 'addresses,images',
             stateCode: 'OR'
         },
@@ -132,7 +132,7 @@ export default function getParksAsync(): Promise<ParkData[]> {
     }).catch(() => {
         // Throw an error with more human-friendly information
         throw new Error(
-            'Failed to load data from National Parks Service.'
+            'Failed to load data from the National Park Service.'
             + ' Try reloading the page or visiting again later.'
         );
     });

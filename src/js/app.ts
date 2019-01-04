@@ -84,7 +84,7 @@ class ViewModel {
         this.menuVisible = ko.observable(true);
         this.errorMessage = ko.observable();
 
-        // Fetch park data from the National Parks Service
+        // Fetch park data from the National Park Service
         const parksPromise = getParksAsync().then((parks) => {
             const favorites = this.dataLoad();
 

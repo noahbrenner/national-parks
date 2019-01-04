@@ -48,7 +48,7 @@ html(lang="en-us")
               data-bind=`text: name, event: {${parkEvents}}, css: {${parkClasses}}`)
         p(data-bind="visible: visibleParks().length === 0") No parks to display
       footer
-        p Data from the #[a(href=web.nps) National Parks Service API].
+        p Data from the #[a(href=web.nps) National Park Service API].
         p Displayed using #[a(href=web.maps) Google Maps] and #[a(href=web.ko) Knockout.js].
         p Some icons from #[a(href=web.mdi) Material Design Icons].
     main#map

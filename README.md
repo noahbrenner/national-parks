@@ -3,7 +3,7 @@ Oregon National Parks Map (web app)
 
 Check out this app running live: https://noahbrenner.github.io/national-parks/
 
-A front end web app which provides information on National Parks in Oregon using data from the [National Parks Service][]. Built using [Knockout.js][] and the [Google Maps API][].
+A front end web app which provides information on National Parks in Oregon using data from the [National Park Service][]. Built using [Knockout.js][] and the [Google Maps API][].
 
 Building the app
 ----------------
@@ -32,7 +32,7 @@ Below is the format of what you'll need to enter in the `.env` file. [See the ne
 
 ```bash
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-NATIONAL_PARKS_SERVICE_API_KEY=your_nps_api_key
+NATIONAL_PARK_SERVICE_API_KEY=your_nps_api_key
 ```
 
 #### API keys
@@ -52,9 +52,9 @@ To get an API key for Google Maps, first register a web application at <https://
     - **API restrictions:** "Maps JavaScript API"
         - If the Maps API isn't present in the drop-down menu, you'll need to enable that API from this page first: https://console.developers.google.com/apis/library
 
-##### National Parks Service
+##### National Park Service
 
-You can get an API key from the National Parks Service by filling out the very short form at <https://www.nps.gov/subjects/developer/get-started.htm>.
+You can get an API key from the National Park Service by filling out the very short form at <https://www.nps.gov/subjects/developer/get-started.htm>.
 
 ### Build it!
 
@@ -100,6 +100,6 @@ Run any of these as `$ npm run _____`:
 
 [Google Maps API]: https://developers.google.com/maps/documentation/javascript/
 [Knockout.js]: https://knockoutjs.com/
-[National Parks Service]: https://www.nps.gov/subjects/developer/api-documentation.htm
+[National Park Service]: https://www.nps.gov/subjects/developer/api-documentation.htm
 [Node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/
