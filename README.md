@@ -10,7 +10,7 @@ Building the app
 
 ### Install dependencies
 
-* You'll first need to install [Node.js][], if you haven't done so already.
+* Install [Node.js][] if it's not already on your system.
 * Clone this repo: `$ git clone https://github.com/noahbrenner/national-parks.git`
 * Install dependencies using [npm][] (which comes with Node).
 
@@ -71,9 +71,7 @@ Development details
 
 ### Browser support
 
-Internet Explorer 9 and older are ***not*** supported. They aren't supported by Google Maps, which is the core feature of this app.
-
-See: https://developers.google.com/maps/documentation/javascript/browsersupport
+Modern browsers are supported. Internet Explorer 9 and older are ***not*** supported because Google Maps, the core feature of this app, only supports IE ≥ 10. Details here: https://developers.google.com/maps/documentation/javascript/browsersupport
 
 ### `npm` scripts
 
