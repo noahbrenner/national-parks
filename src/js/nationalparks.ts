@@ -1,8 +1,3 @@
-// Import type definitions for the National Park Service API
-// Parcel errors out if this is `import`ed, so we're using triple-slash syntax
-// tslint:disable-next-line:no-reference
-/// <reference path="./nps.d.ts" />
-
 import axios from 'axios';
 // Needed in order to reference environment variables during build process:
 // https://github.com/parcel-bundler/parcel/issues/305#issuecomment-352241629
