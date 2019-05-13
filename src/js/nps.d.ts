@@ -5,22 +5,22 @@
  * and included a `fields` URL parameter specifying "addresses" and "images".
  */
 declare namespace nps {
-    interface response {
-        data: park[];
+    interface Response {
+        data: Park[];
         limit: number;
         start: number;
         total: number;
     }
 
-    interface park {
-        addresses: address[];
+    interface Park {
+        addresses: Address[];
         description: string;
         designation: string;
         directionsInfo: string;
         directionsUrl: string;
         fullName: string;
         id: string;
-        images: image[];
+        images: Image[];
         latLong: string;
         name: string;
         parkCode: string;
@@ -29,7 +29,7 @@ declare namespace nps {
         weatherInfo: string;
     }
 
-    interface address {
+    interface Address {
         city: string;
         line1: string;
         line2: string;
@@ -39,7 +39,7 @@ declare namespace nps {
         type: 'Physical' | 'Mailing';
     }
 
-    interface image {
+    interface Image {
         altText: string;
         caption: string;
         credit: string;
