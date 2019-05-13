@@ -1,8 +1,3 @@
-// Import type definitions for the National Park Service API
-// Parcel errors out if this is `import`ed, so we're using triple-slash syntax
-// tslint:disable-next-line:no-reference
-/// <reference path="./nps.d.ts" />
-
 import axios from 'axios';
 // Needed in order to reference environment variables during build process:
 // https://github.com/parcel-bundler/parcel/issues/305#issuecomment-352241629
@@ -61,7 +56,7 @@ function getLatLng(parkLatLong: string): google.maps.LatLngLiteral {
 }
 
 /** Create a `ParkAddress` object */
-function getAddress(address?: nps.address): ParkAddress | undefined {
+function getAddress(address?: nps.Address): ParkAddress | undefined {
     if (address) {
         const {line1, line2, city, stateCode, postalCode} = address;
 
@@ -76,7 +71,7 @@ function getAddress(address?: nps.address): ParkAddress | undefined {
 }
 
 /** Create an array of ParkData objects from the NPS API response */
-function extractParkData(parkAPIData: nps.response): ParkData[] {
+function extractParkData(parkAPIData: nps.Response): ParkData[] {
     /*
      * Some parks span multiple states. We're only requesting parks that are in
      * Oregon, but the provided coordinates and address may be far away. We
@@ -99,7 +94,7 @@ function extractParkData(parkAPIData: nps.response): ParkData[] {
         })
         .map((park) => {
             // Extract the specific data we need
-            const image: nps.image = park.images[0];
+            const image: nps.Image = park.images[0];
             return {
                 address: getAddress(park.addresses[0]),
                 description: park.description,
