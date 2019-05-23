@@ -20,7 +20,7 @@ export class Park implements ParkData {
     public imgAlt?: string;
     public imgCaption?: string;
     public imgUrl?: string;
-    public isFavorite!: KnockoutObservable<boolean>;
+    public isFavorite!: ko.Observable<boolean>;
     public latLng!: google.maps.LatLngLiteral;
     public name!: string;
     public parent: ViewModel;
@@ -44,15 +44,15 @@ export class Park implements ParkData {
 
 /** Constructor for our Knockout ViewModel */
 class ViewModel {
-    public currentPark: KnockoutObservable<Park | undefined>;
-    public errorMessage: KnockoutObservable<string | undefined>;
-    public hoveredPark: KnockoutObservable<Park | undefined>;
-    public menuVisible: KnockoutObservable<boolean>;
-    public onlyShowFavorites: KnockoutObservable<string>;
+    public currentPark: ko.Observable<Park | undefined>;
+    public errorMessage: ko.Observable<string | undefined>;
+    public hoveredPark: ko.Observable<Park | undefined>;
+    public menuVisible: ko.Observable<boolean>;
+    public onlyShowFavorites: ko.Observable<string>;
     public parkMap?: ParkMapType;
-    public parkTypeFilter: KnockoutObservable<string | undefined>;
-    public parkTypes: KnockoutObservableArray<string>;
-    public parks: KnockoutObservableArray<Park>;
+    public parkTypeFilter: ko.Observable<string | undefined>;
+    public parkTypes: ko.ObservableArray<string>;
+    public parks: ko.ObservableArray<Park>;
 
     public favoriteParks = ko.pureComputed(() => {
         return this.parks().filter((park) => park.isFavorite());
