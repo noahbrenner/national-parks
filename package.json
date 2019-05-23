@@ -19,10 +19,10 @@
     "@mdi/js": "^3.6.95",
     "axios": "^0.18.0",
     "knockout": "3.4.2",
-    "sanitize.css": "^8.0.0"
+    "sanitize.css": "^9.0.0"
   },
   "devDependencies": {
-    "@types/googlemaps": "^3.30.19",
+    "@types/googlemaps": "^3.36.0",
     "@types/knockout": "^3.4.60",
     "autoprefixer": "^9.5.1",
     "del-cli": "^1.1.0",
