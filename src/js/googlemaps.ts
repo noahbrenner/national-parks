@@ -244,7 +244,7 @@ export class ParkMap {
 
         this.markers
             .filter((marker) => marker.getMap() === this.map)
-            .map((marker) => marker.getPosition())
+            .map((marker) => marker.getPosition() as google.maps.LatLng)
             .forEach((position) => bounds.extend(position));
 
         this.infoClose();
