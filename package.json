@@ -19,7 +19,7 @@
     "@mdi/js": "~3.9.97",
     "axios": "~0.19.2",
     "knockout": "~3.5.1",
-    "sanitize.css": "~9.0.0"
+    "sanitize.css": "~7.0.3"
   },
   "devDependencies": {
     "@types/googlemaps": "~3.39.11",
