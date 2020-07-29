@@ -1,4 +1,4 @@
-const icons = require('@mdi/js');
+const {mdiMenu} = require('@mdi/js');
 
 const polyfillFeatures = [
     'Array.prototype.find',
@@ -11,7 +11,7 @@ const polyfillFeatures = [
 exports.locals = {
     googleApiKey: process.env.GOOGLE_MAPS_API_KEY,
     polyfillFeatures: polyfillFeatures.join(','),
-    svgPathMenu: icons.mdiMenu,
+    svgPathMenu: mdiMenu,
     web: {
         noah: 'https://noahbrenner.github.io/',
         repo: 'https://github.com/noahbrenner/national-parks',
