@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@mdi/js": "~3.9.97",
-    "axios": "~0.19.2",
+    "axios": "~0.21.1",
     "knockout": "~3.5.1",
     "sanitize.css": "~7.0.3"
   },
